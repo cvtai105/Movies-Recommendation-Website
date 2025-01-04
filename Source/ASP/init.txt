@@ -1,0 +1,39 @@
+### this is just a note, ignore it
+
+dotnet new sln -n MRS
+
+dotnet new webapi -n Api                   
+dotnet new classlib -n Application     
+dotnet new classlib -n Domain             
+dotnet new classlib -n Infrastructure      
+dotnet new classlib -n Shared      
+
+dotnet sln add Api/Api.csproj
+dotnet sln add Application/Application.csproj
+dotnet sln add Domain/Domain.csproj
+dotnet sln add Infrastructure/Infrastructure.csproj
+
+#Clean Architect dependencies
+dotnet add Application/Application.csproj reference Domain/Domain.csproj
+dotnet add Infrastructure/Infrastructure.csproj reference Application/Application.csproj
+dotnet add Infrastructure/Infrastructure.csproj reference Domain/Domain.csproj
+dotnet add Api/Api.csproj reference Application/Application.csproj
+dotnet add Api/Api.csproj reference Infrastructure/Infrastructure.csproj
+
+--> create entities with navigation properties
+#package:
+dotnet add Application/Application.csproj package Microsoft.Extensions.DependencyInjection
+dotnet add Application/Application.csproj package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add Api/Api.csproj package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.10
+dotnet add Api/Api.csproj package Microsoft.EntityFrameworkCore.Design
+
+dotnet add Application/Application.csproj package FluentValidation
+dotnet add Domain/Domain.csproj package MediatR (for /CQRS)
+
+#migrate
+dotnet ef migrations add Initial --project Infrastructure -o Data/Migrations --startup-project Api
+dotnet ef database update --project Infrastructure --startup-project Api
+
+#check
+IRequest, IRequestHandler pattern
+INotification, INotificationHandler pattern
