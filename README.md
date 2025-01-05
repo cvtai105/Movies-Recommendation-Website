@@ -2,7 +2,9 @@
 
 ## Convention
 
-1. Github:
+---
+
+**1. Github**
 
 -   Each member create their own branches (one or more branches) and develope features. <br> Once done, create pull request to main branch for CI proccess.<br> Each member is required to commit their code for every 2 days.<br>
 
@@ -23,7 +25,9 @@
 
     _example commit: `feat: add email notifications on new direct messages`_
 
-2. Code convention:
+---
+
+**2. Code convention**
 
 -   UI:
 
@@ -43,13 +47,17 @@
 
 -   Spring Boot backend:
 
-3. Jira:
+---
+
+**3. Jira**
 
 -   Each member create their own tasks and set timelines base on this file: [task assign](https://docs.google.com/spreadsheets/d/1-FGll0zG-p26ScuKfIzvkhJsJWIjO9MM/edit?gid=1078026055#gid=1078026055)
 
 -   Jira would be reviewed every 2 days
 
-4. Documents
+---
+
+**4. Documents**
 
 -   Each member writes a description for the features they are responsible for, in [Reports/LabFinalProjectReport](./Reports/LabFinalProjectReport/README.md) folder
 -   Can Use chatgpt for convinients.
