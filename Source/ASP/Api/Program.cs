@@ -67,23 +67,23 @@ if (!app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
-try // Migrate database
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
+// try // Migrate database
+// {
+//     using (var scope = app.Services.CreateScope())
+//     {
+//         var services = scope.ServiceProvider;
 
-        var context = services.GetRequiredService<ApplicationDbContext>();
-        if (context.Database.GetPendingMigrations().Any())
-        {
-            context.Database.Migrate();
-        }
-    }
-}
-catch (Exception ex)
-{
-    var logger = app.Services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error occurred while migrating the database.");
-}
+//         var context = services.GetRequiredService<ApplicationDbContext>();
+//         if (context.Database.GetPendingMigrations().Any())
+//         {
+//             context.Database.Migrate();
+//         }
+//     }
+// }
+// catch (Exception ex)
+// {
+//     var logger = app.Services.GetRequiredService<ILogger<Program>>();
+//     logger.LogError(ex, "An error occurred while migrating the database.");
+// }
 
 app.Run();

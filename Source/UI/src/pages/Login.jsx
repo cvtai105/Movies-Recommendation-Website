@@ -95,7 +95,7 @@ function Login() {
     <div className="max-w-md mx-auto mt-20 p-6 text-center border border-gray-300 rounded-lg shadow-md">
       {isAuthenticated ? (
         <div>
-          <h2 className="text-xl font-semibold text-green-600 mt-4">
+          <h2 className="text-xl font-semibold bg-blue-900 mt-4">
             Hello again, {userData.name}!
           </h2>
           <p className="mt-2 text-gray-600">You are already logged in.</p>
@@ -139,8 +139,8 @@ function Login() {
               type="submit"
               className={
                 loading
-                  ? "cursor-not-allowed px-4 py-2 bg-green-300 text-white font-medium rounded-lg"
-                  : "px-4 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600"
+                  ? "cursor-not-allowed px-4 py-2 bg-blue-300 text-white font-medium rounded-lg"
+                  : "px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600"
               }
               onClick={handleSubmit}
             >
@@ -160,9 +160,18 @@ function Login() {
             Don't have an account?{" "}
             <span
               onClick={() => navigate("/register")}
-              className="text-green-500 cursor-pointer hover:underline"
+              className="text-blue-500 cursor-pointer hover:underline"
             >
               Register here
+            </span>
+          </p>
+          <p className="mt-2 text-gray-600">
+            Forgot password?{" "}
+            <span
+              onClick={() => navigate("/password-reset")}
+              className="text-blue-500 cursor-pointer hover:underline"
+            >
+              Reset here
             </span>
           </p>
         </>

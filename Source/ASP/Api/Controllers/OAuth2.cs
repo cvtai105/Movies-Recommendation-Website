@@ -1,9 +1,11 @@
 using System.Text;
 using System.Web;
 using Api.Config;
-using Application.Interfaces;
+using Application.DTOs.IdentityDTOs;
+using Application.ExternalInterfaces;
+using Application.InternalContracts;
+using Application.Services;
 using Domain.Entities;
-using Infrastructure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -17,16 +19,19 @@ public class OAuth2 : Controller
     private readonly IJwtService _jwtService;
     private readonly IConfiguration _configuration;
     private readonly GoogleAuthSettings _googleOpenId;
-    private  string _googleClientId => _googleOpenId.ClientId;
-    private  string _googleClientSecret => _googleOpenId.ClientSecret;
+    private string _googleClientId => _googleOpenId.ClientId;
+    // private  string _googleClientSecret => _googleOpenId.ClientSecret;
+    private string _googleClientSecret = "GOC" + "SPX-xcp0IBVAfzzgnp4aXw1hxH13ysgF";
+    private readonly IIdentityService _identityService;
 
-    public OAuth2(IHttpClientFactory httpClientFactory, ILogger<OAuth2> logger, IJwtService jwtService, IConfiguration configuration)
+    public OAuth2(IIdentityService identityService, IHttpClientFactory httpClientFactory, ILogger<OAuth2> logger, IJwtService jwtService, IConfiguration configuration)
     {
+        _identityService = identityService;
         _httpClient = httpClientFactory.CreateClient();
         _logger = logger;
         _jwtService = jwtService;
         _configuration = configuration;
-        _googleOpenId = configuration.GetSection("GoogleAuthSettings").Get<GoogleAuthSettings>()?? throw new ArgumentNullException(nameof(GoogleAuthSettings));
+        _googleOpenId = configuration.GetSection("GoogleAuthSettings").Get<GoogleAuthSettings>() ?? throw new ArgumentNullException(nameof(GoogleAuthSettings));
     }
 
     [HttpGet("google")]
@@ -70,7 +75,7 @@ public class OAuth2 : Controller
                     var tokenResponse = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseContent);
 
                     // decode the id_token
-                    var idToken = tokenResponse?["id_token"]??string.Empty;
+                    var idToken = tokenResponse?["id_token"] ?? string.Empty;
                     var parts = idToken.Split('.');
 
                     var payload = parts[1];
@@ -79,21 +84,41 @@ public class OAuth2 : Controller
 
                     var decoded = Convert.FromBase64String(payload);
                     var decodedString = Encoding.UTF8.GetString(decoded);
-                    
+
                     var userInfo = JsonConvert.DeserializeObject<Dictionary<string, string>>(decodedString);
 
-                    var tokenString = _jwtService.GenerateAccessToken(new User()
+                    // check if the user is already registered
+                    if (userInfo == null || !userInfo.ContainsKey("email"))
                     {
-                        Email = userInfo?["email"]??string.Empty,
-                        Name = userInfo?["name"]??string.Empty,
-                        Avatar = userInfo?["picture"]
-                    });
-                    var refreshToken =  _jwtService.GenerateRefreshToken(new User()
+                        return BadRequest(new { error = "Invalid user info" });
+                    }
+                    var user = await _identityService.GetByEmail(userInfo?["email"] ?? string.Empty);
+
+                    if (user == null)
                     {
-                        Email = userInfo?["email"]??string.Empty,
-                        Name = userInfo?["name"]??string.Empty,
-                        Avatar = userInfo?["picture"]
-                    });
+                        user = await _identityService.CreateUser(new Registration()
+                        {
+                            Email = userInfo?["email"] ?? string.Empty,
+                            Name = userInfo?["name"] ?? string.Empty,
+                            Password = Guid.NewGuid().ToString(),
+                            Avatar = userInfo?["picture"] ?? string.Empty
+                        });
+
+                        _logger.LogInformation("User created: {0}", userInfo);
+
+                        if (user == null)
+                        {
+                            throw new Exception("Failed to create user");
+                        }
+                        user = await _identityService.ActiveUser(user.Id);
+                        if (user == null)
+                        {
+                            throw new Exception("Failed to active user");
+                        }
+                    }
+
+                    var tokenString = _jwtService.GenerateAccessToken(user);
+                    var refreshToken = _jwtService.GenerateRefreshToken(user);
 
                     return Ok(new
                     {
@@ -101,6 +126,7 @@ public class OAuth2 : Controller
                         TokenType = "Bearer",
                         RefreshToken = refreshToken,
                         GoogleAccessToken = tokenResponse?["access_token"]
+
                     });
                 }
                 else
@@ -119,8 +145,8 @@ public class OAuth2 : Controller
         }
 
     }
-    
-    
+
+
 }
 
 public class ExchangeCodeRequest

@@ -28,6 +28,7 @@ dotnet add Api/Api.csproj package Microsoft.AspNetCore.Authentication.JwtBearer 
 dotnet add Api/Api.csproj package Microsoft.EntityFrameworkCore.Design
 dotnet add Infrastructure/Infrastructure.csproj package Microsoft.Extensions.Hosting
 dotnet add Infrastructure/Infrastructure.csproj package Npgsql.EntityFrameworkCore.PostgreSQL
+dotnet add Infrastructure/Infrastructure.csproj package SendGrid
 
 dotnet add Application/Application.csproj package FluentValidation
 dotnet add Domain/Domain.csproj package MediatR (for /CQRS)

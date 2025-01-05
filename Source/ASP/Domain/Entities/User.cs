@@ -16,6 +16,7 @@ public class User
     public string Hash { get; set; } = null!;
     [StringLength(20)]
     public string? Status { get; set; }
+    public string Role { get; set; } = null!;
 
     public ICollection<SearchHistory> SearchHistories { get; set; } = [];
     public ICollection<UserMovie> UserMovies { get; set; } = [];

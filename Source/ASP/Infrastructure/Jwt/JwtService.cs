@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Application.Interfaces;
+using Application.ExternalInterfaces;
 using Domain.Entities;
 using Infrastructure.Jwt;
 using Microsoft.Extensions.Options;
@@ -38,6 +38,7 @@ namespace Infrastructure.Identity
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(JwtRegisteredClaimNames.Email, user.Email),
                 new(JwtRegisteredClaimNames.Sub, user.Email),
+                new(ClaimTypes.Role, user.Role),
                 new Claim("userId", user.Id.ToString()),
                 new Claim("picture", user.Avatar?? ""),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
