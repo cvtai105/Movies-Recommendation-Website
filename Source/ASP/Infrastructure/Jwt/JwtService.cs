@@ -39,6 +39,7 @@ namespace Infrastructure.Identity
                 new(JwtRegisteredClaimNames.Email, user.Email),
                 new(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim("userId", user.Id.ToString()),
+                new Claim("picture", user.Avatar?? ""),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 

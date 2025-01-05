@@ -1,0 +1,1 @@
+export const GOOGLE_REDIRECT_URI = `${import.meta.env.VITE_UI_URL}/oauth2/google/redirected`;

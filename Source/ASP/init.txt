@@ -29,6 +29,7 @@ dotnet add Api/Api.csproj package Microsoft.EntityFrameworkCore.Design
 
 dotnet add Application/Application.csproj package FluentValidation
 dotnet add Domain/Domain.csproj package MediatR (for /CQRS)
+dotnet add Api/Api.csproj package Newtonsoft.Json
 
 #migrate
 dotnet ef migrations add Initial --project Infrastructure -o Data/Migrations --startup-project Api
