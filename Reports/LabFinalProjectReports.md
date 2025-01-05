@@ -1,8 +1,0 @@
-- System Description: Provide an overview of your project.
-- Team Information: Introduce your team members.
-- Project Plan Tracker: Outline your project plan and progress.
-- Functionalities Analysis: Describe the functionalities of your project.
-- Database Design: Detail the structure and design of your database.
-- UI/UX Design: Include Layout Design and Implementation details.
-- Guideline: Offer instructions for web usage and deployment (both local and internet).
-    - Local: 

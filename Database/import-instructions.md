@@ -1,7 +1,15 @@
 # Import database
-1. In Source/ASP/Api/appsettings.Development.json, change connection string in section ConnectionStrings.PostgreSQLConnection
-2. Run migrations:
+
+1. Change connection string:
+
+-   In Source/ASP/Api/appsettings.Development.json, change connection string in section ConnectionStrings.PostgreSQLConnection
+-   Java?
+
+2. Run migrations <br>
+   install dotnet if not and run:
+
 ```bash
+dotnet tool install --global dotnet-ef
 cd Source/ASP
 dotnet ef database update --project Infrastructure --startup-project Api
 ```
