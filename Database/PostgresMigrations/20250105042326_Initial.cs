@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Data.Migrations
+namespace Infrastructure.Data.PostgresMigrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -15,9 +16,9 @@ namespace Infrastructure.Data.Migrations
                 name: "Genres",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,13 +29,13 @@ namespace Infrastructure.Data.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Release_date = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Poster_path = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Vote_average = table.Column<double>(type: "float", nullable: false),
-                    Vote_count = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Release_date = table.Column<string>(type: "text", nullable: false),
+                    Poster_path = table.Column<string>(type: "text", nullable: false),
+                    Vote_average = table.Column<double>(type: "double precision", nullable: false),
+                    Vote_count = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,12 +46,12 @@ namespace Infrastructure.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Avatar = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Hash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    Avatar = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Hash = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,10 +62,10 @@ namespace Infrastructure.Data.Migrations
                 name: "MovieGenres",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MovieId = table.Column<int>(type: "int", nullable: false),
-                    GenreId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MovieId = table.Column<int>(type: "integer", nullable: false),
+                    GenreId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,12 +88,12 @@ namespace Infrastructure.Data.Migrations
                 name: "SearchHistories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Search = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Proccessed_search = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Search_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Search = table.Column<string>(type: "text", nullable: false),
+                    Proccessed_search = table.Column<string>(type: "text", nullable: false),
+                    Search_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,14 +110,14 @@ namespace Infrastructure.Data.Migrations
                 name: "UserMovies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Rating = table.Column<double>(type: "float", nullable: true),
-                    Favorite = table.Column<bool>(type: "bit", nullable: false),
-                    Watched = table.Column<bool>(type: "bit", nullable: false),
-                    Watched_date = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MovieId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Rating = table.Column<double>(type: "double precision", nullable: true),
+                    Favorite = table.Column<bool>(type: "boolean", nullable: false),
+                    Watched = table.Column<bool>(type: "boolean", nullable: false),
+                    Watched_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MovieId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

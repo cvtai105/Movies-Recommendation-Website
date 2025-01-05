@@ -2,18 +2,37 @@
 using Microsoft.Extensions.DependencyInjection;
 using Application.Interfaces;
 using Infrastructure.Identity;
+using Microsoft.Extensions.Hosting;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
-namespace Infrastructure
+namespace Infrastructure;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static void AddInfrastructure(this IHostApplicationBuilder builder)
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
-        {
-            // services.AddDbContext<ApplicationDbContext>(options =>
-            //     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        var provider = builder.Configuration.GetConnectionString("DatabaseProvider");
+        var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<string>>();
 
-            services.AddScoped<IJwtService, JwtService>();
-            return services;
-        }
+        builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>{
+            if (provider == "PostgreSQL")
+            {
+                logger.LogInformation("Using PostgreSQL");
+
+                connectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection");
+                options.UseNpgsql(connectionString);
+            }
+            else
+            {
+                logger.LogInformation("Using SqlServer");
+                options.UseSqlServer(connectionString);
+            }
+        });
+
+        builder.Services.AddScoped<IJwtService, JwtService>();
     }
 }

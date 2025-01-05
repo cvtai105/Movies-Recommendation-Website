@@ -1,6 +1,6 @@
 # How to run app:
 ### For Demo, Run with docker
-1. Run - this will automatically create database
+1. Run - this will automatically create databas
 ```bash
 docker compose -f docker-compose.dev.yml up -d
 ```
@@ -11,14 +11,20 @@ docker compose -f docker-compose.dev.yml down -v
 
 
 ### For developer, Run with compiler
-_NodeJs, .Net8, Java, MSSQL is required_
+_NodeJs, .Net8, Java, MSSQL/Postgres is required_
 
-0. Migrate Database
+<!-- 0. Migrate Database
 ```bash
 dotnet tool install --global dotnet-ef
 cd ASP
 dotnet ef database update --project Infrastructure --startup-project Api
-```
+``` -->
+0. Postgres database properties:
+- PGHOST=ep-blue-night-a1hhgj7z-pooler.ap-southeast-1.aws.neon.tech
+- PGHOST_UNPOOLED=ep-blue-night-a1hhgj7z.ap-southeast-1.aws.neon.tech
+- PGUSER=neondb_owner
+- PGDATABASE=neondb
+- PGPASSWORD=gQXOlYk5xnH4
 
 1. Run User Interface App (Vite/ReactJs) <br>
 ``` bash

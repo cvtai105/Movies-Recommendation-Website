@@ -27,13 +27,9 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
-builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddInfrastructure();
+builder.AddInfrastructure();
 builder.Services.AddCoreServices();
 
-// Retrieve CORS origins from configuration
 var allowedOrigins = builder.Configuration.GetSection("AllowedHosts").Get<string[]>();
 builder.Services.AddCors(options =>
 {
@@ -47,7 +43,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();
 builder.Services.ConfigureOptions<JwtOptionConfig>();
 builder.Services.ConfigureOptions<JwtValidateConfig>();
-//Tạm thời Authorize băng role, nếu cần phức tạp hơn thì sử dụng Policy
 builder.Services.AddAuthorization();
     
 var app = builder.Build();
