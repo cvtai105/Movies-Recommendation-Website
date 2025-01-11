@@ -1,18 +1,12 @@
-package org.adweb.java.collection;
+package org.adweb.java.collection.Movie;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-import org.adweb.java.document.Credit;
-import org.adweb.java.document.MovieGenre;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.ArrayList;
 
 @Data
-@Document(collection = "movies")
-public class Movie {
+public class MovieGeneral {
     @Id
     @JsonProperty("id")
     private ObjectId id;
@@ -30,16 +24,10 @@ public class Movie {
     private String backdrop_path;
     @JsonProperty("original_language")
     private String original_language;
-    @JsonProperty("status")
-    private String status;
+    @JsonProperty("titile")
+    private String title;
     @JsonProperty("vote_count")
     private Integer vote_count;
     @JsonProperty("vote_average")
     private Double vote_average;
-
-    @JsonProperty("genres")
-    private ArrayList<MovieGenre> genres;
-
-    @JsonProperty("credits")
-    private Credit credits;
 }
