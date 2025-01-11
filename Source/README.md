@@ -52,5 +52,5 @@ cd Java
 mvn clean                       #clean the project
 mvn install                     #install and build target files
 docker build -t javaaap .       #build docker image
-docker run -t 8080:8080 javaap  #run docker
+docker run -p 8080:8080 javaaap  #run docker
 ```
