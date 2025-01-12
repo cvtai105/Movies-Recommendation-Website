@@ -1,4 +1,5 @@
 import React from "react";
+import {TMDB_STATIC_FILE_PATH} from '../../const/linkToResource'
 
 const MovieInfo = ({ info }) => {
   console.log("info", info);
@@ -8,14 +9,14 @@ const MovieInfo = ({ info }) => {
         <div className="h-full w-[calc(100vh*9/16)] mx-4">
           <img
             className="h-full w-full object-cover rounded-md"
-            src={`https://image.tmdb.org/t/p/original/${info?.poster_path}`}
+            src={`${TMDB_STATIC_FILE_PATH}/${info?.poster_path}`}
             alt={info?.title}
           />
         </div>
         <div className="w-full bg-no-repeat bg-contain bg-center opacity-60 text-white mr-4">
           <img
             className="w-full h-full object-cover object-center"
-            src={`https://image.tmdb.org/t/p/original/${info?.backdrop_path}`}
+            src={`${TMDB_STATIC_FILE_PATH}/${info?.backdrop_path}`}
             alt={info?.title}
           />
           <section className="absolute sm:top-[50%] md:top-[10%] flex flex-col gap-4 mx-4 p-4">
@@ -86,7 +87,11 @@ const MovieInfo = ({ info }) => {
                   </span>
                 </div>
               </div>
-              <p>User Score</p>
+              <p>
+                User Score
+                <br />
+                {info?.vote_count} votes
+              </p>
             </div>
 
             <div>

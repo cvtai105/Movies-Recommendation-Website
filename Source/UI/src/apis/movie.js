@@ -1,3 +1,4 @@
+import {JAVA_SERVICE_API} from "../const/linkToResource"
 
 export async function fetchMovies(query, page = 1, language = 'en-US', year = null, primary_release_year = null, region = null, adult = false, ) {
     
@@ -51,11 +52,11 @@ export async function fetchMovies(query, page = 1, language = 'en-US', year = nu
     return data;
 }
 
-export async function getMovieDetails(movieId) {
-    const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
+export async function getMovieDetails(tmdbId) {
+    const url = `${JAVA_SERVICE_API}/${tmdbId}`;
     const response = await fetch(url, {
         headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+            // Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
         },
     });
     const data = await response.json()

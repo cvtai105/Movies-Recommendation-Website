@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieDetails } from "../../apis/movie";
 import MovieInfo from "./MovieInfo";
-import Recomendation from "./Recomendation";
+import Media from "./Media"
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -23,9 +23,9 @@ const MovieDetails = () => {
   }, [id]);
 
   return (
-    <div>
+    <div className="m-0">
       <MovieInfo info={movieData} />
-      <Recomendation movieId={id}/>
+      <Media movie={movieData} />
     </div>
   );
 };
