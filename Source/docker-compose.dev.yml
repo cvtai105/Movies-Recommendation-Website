@@ -53,3 +53,12 @@ services:
             - MONGO_USER=hoangvanquoc923
             - MONGO_PASSWORD=movieapp123
             - MONGO_CLUSTER=cluster0.icsie.mongodb.net
+
+    # python-api:
+    #     build:
+    #         context: ./Python
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - "5000:5000"
+    #     env_file:
+    #         - .env

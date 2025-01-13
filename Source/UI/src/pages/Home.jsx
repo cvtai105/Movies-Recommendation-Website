@@ -11,7 +11,7 @@ import TrendingRow from '../components/TrendingRow.jsx';
 
 function Home() {
   const navigate = useNavigate();
-  const { logout, isAuthenticated, userData } = useContext(AppContext);
+  const { logout } = useContext(AppContext);
 
   const handleLoginClick = () => {
     navigate('/login');

@@ -25,6 +25,7 @@ function Login() {
 
     setError(null);
     try {
+      NProgress.start();
       validateEmail(email);
       validatePassword(password);
       const response = await fetch(
@@ -45,9 +46,12 @@ function Login() {
 
       const data = await response.json();
       login(data.accessToken, data.refreshToken);
+
+      NProgress.done();
       navigate('/');
     } catch (err) {
       setError(err.message);
+      NProgress.done();
       setLoading(false);
     }
   };
@@ -95,7 +99,7 @@ function Login() {
 
   return (
     <div className="max-w-md mx-auto mt-20 p-6 text-center border border-gray-300 rounded-lg shadow-md">
-      {isAuthenticated ? (
+      {isAuthenticated() ? (
         <div>
           <h2 className="text-xl font-semibold bg-blue-900 mt-4">
             Hello again, {userData.name}!

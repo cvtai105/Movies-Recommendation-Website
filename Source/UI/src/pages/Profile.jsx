@@ -1,79 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AppContext } from "../AppContext";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { useAppContext } from '../AppContext';
 
-function Profile() {
-  const { isAuthenticated, fetchWithAuth } = useContext(AppContext);
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-    } else {
-      setLoading(true);
-      fetchWithAuth(`${import.meta.env.VITE_IDENTITY_API_URL}/api/auth/profile`)
-        .then((data) => {
-          console.log(data);
-          setUserData(data.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-        });
-    }
-  }, [isAuthenticated, navigate]);
-
-  const handleGoBack = () => {
-    navigate('/'); // navigates to the previous page
-  };
-
-  if (loading) {
-    return (
-      <div className="max-w-xl mx-auto mt-12 p-10 text-center border border-gray-300 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Profile</h1>
-        <p className="text-lg text-gray-600 mb-6">Loading user data...</p>
+const Profile = () => {
+  const { userData } = useAppContext();
+  return (
+    <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow-md">
+      <div className="mb-4">
+        <FontAwesomeIcon
+          icon={faUserCircle}
+          size="6x"
+          className="text-gray-500"
+        />
       </div>
-    );
-  }else{
-    if (!isAuthenticated) {
-      return (
-        <div className="max-w-xl mx-auto mt-12 p-10 text-center border border-gray-300 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Profile</h1>
-          <p className="text-lg text-gray-600 mb-6">
-            You are not authorized to access this page.
-          </p>
-          <button
-            onClick={handleGoBack}
-            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Back to home page
-          </button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="max-w-xl mx-auto mt-12 p-10 text-center border border-gray-300 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Profile</h1>
-          <div className="text-lg text-gray-600 mb-6">
-            <p>
-              <strong>Name:</strong> {userData?.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {userData?.email}
-            </p>
-          </div>
-          <button
-            onClick={() => navigate("/")}
-            className="mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded hover:bg-green-600"
-          >
-            Go to Home
-          </button>
-        </div>
-      );
-    }
-  }
-}
+      <div className="text-center">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          {userData.name}
+        </h2>
+        <p className="text-gray-600">{userData.email}</p>
+      </div>
+    </div>
+  );
+};
 
 export default Profile;

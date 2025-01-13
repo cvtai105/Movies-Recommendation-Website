@@ -30,12 +30,13 @@ const routes = createRoutesFromElements(
       <Route path="/unauthorize" element={<UnauthorizedPage />} />
       <Route element={<PrivateRoute />}>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/favorites" element={<Profile />} />
       </Route>
+      <Route path="/login" element={<Login />} />,
+      <Route path="/register" element={<Register />} />
+      <Route path="/password/reset" element={<ResetPassword />} />
     </Route>
     <Route path="/oauth2/google/redirected" element={<GoogleRedirected />} />
-    <Route path="/login" element={<Login />} />,
-    <Route path="/register" element={<Register />} />
-    <Route path="/password/reset" element={<ResetPassword />} />
     <Route
       path="/oauth2/facebook/redirect"
       element={<FacebookOauth2RedirectHandler />}
