@@ -7,7 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MovieRepo extends MongoRepository<Movie, ObjectId> {
     Page<Movie> findAll(Pageable pageable);
+    Optional<Movie> findByTmdbId(Long tmdbId);
 }

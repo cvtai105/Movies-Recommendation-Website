@@ -60,4 +60,11 @@ public class MovieService {
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return movieUpcomingRepo.findAll(pageRequest);
     }
+
+    public Movie getMovieDetails(Long id) {
+        return movieRepo.findByTmdbId(id)
+                .orElseThrow(
+                        () -> new RuntimeException("Movie not found with tmdb_id " + id)
+                );
+    }
 }
