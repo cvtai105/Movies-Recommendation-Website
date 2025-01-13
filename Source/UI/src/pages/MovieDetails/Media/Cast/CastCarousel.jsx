@@ -1,6 +1,7 @@
 import { IoMdArrowDropright } from 'react-icons/io';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { TMDB_STATIC_FILE_PATH } from '../../../../const/linkToResource';
+import { Link } from 'react-router-dom';
 
 const CastCarousel = ({ castList }) => {
   function moveSlideToLeft() {
@@ -24,21 +25,23 @@ const CastCarousel = ({ castList }) => {
       >
         {castList?.length > 0 &&
           castList?.map((c) => (
-            <div
-              className={`h-full w-[140px] w-min-[140px] inline-block mr-4 group relative`}
-            >
-              <div className="image-wrapper">
-                <img
-                  className="w-full h-full object-cover rounded-xl group-hover:shadow-lg"
-                  src={`${TMDB_STATIC_FILE_PATH}/${c.profile_path}`}
-                  alt="cast avatar"
-                />
+            <Link to={`/cast/${c.id}`}>
+              <div
+                className={`h-full w-[140px] w-min-[140px] inline-block mr-4 group relative`}
+              >
+                <div className="image-wrapper">
+                  <img
+                    className="w-full h-full object-cover rounded-xl group-hover:shadow-lg"
+                    src={`${TMDB_STATIC_FILE_PATH}/${c.profile_path}`}
+                    alt="cast avatar"
+                  />
+                </div>
+                <p className="font-bold">{c.name}</p>
+                <p className="text-gray-500">
+                  {c.character.substring(0, c.character.indexOf('/'))}
+                </p>
               </div>
-              <p className="font-bold">{c.name}</p>
-              <p className="text-gray-500">
-                {c.character.substring(0, c.character.indexOf('/'))}
-              </p>
-            </div>
+            </Link>
           ))}
       </div>
       <MdChevronRight

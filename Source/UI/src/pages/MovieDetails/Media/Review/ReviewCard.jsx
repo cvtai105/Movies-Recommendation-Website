@@ -11,8 +11,8 @@ const ReviewCard = ({ author, content, createdAt }) => {
       ? content
       : content.slice(0, maxLength) + '...';
   return (
-    <li class="bg-gray-50 p-4 rounded-md shadow-sm">
-      <p class="text-gray-700">
+    <li className="bg-gray-50 p-4 rounded-md shadow-sm">
+      <p className="text-gray-700">
         {displayedContent}
         {shouldTruncate && !isExpanded}
       </p>
@@ -25,7 +25,7 @@ const ReviewCard = ({ author, content, createdAt }) => {
         </button>
       )}
 
-      <span class="text-sm text-gray-400 font-mono block">
+      <span className="text-sm text-gray-400 font-mono block">
         - {author} | {createdAt.substring(0, 10)}
       </span>
     </li>

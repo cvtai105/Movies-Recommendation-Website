@@ -8,6 +8,7 @@ const MovieDetails = () => {
   const { id } = useParams();
   const [movieData, setMovieData] = useState();
 
+  console.log("movie details data", movieData)
   useEffect(() => {
     if (!id) {
       return <h1>The movie id is undefine.</h1>;
@@ -20,6 +21,13 @@ const MovieDetails = () => {
     };
 
     fetchMovie();
+  }, [id]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [id]);
 
   return (
