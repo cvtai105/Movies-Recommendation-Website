@@ -3,6 +3,7 @@ package org.adweb.java.controller;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.adweb.java.collection.Movie.*;
+import org.adweb.java.collection.User.Review;
 import org.adweb.java.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -83,6 +84,14 @@ public class MovieController {
     ) {
         Page<MovieUpcoming> moviesPage = movieService.getMovieUpComing(page, size);
         return pagedResourcesAssembler.toModel(moviesPage);
+    }
+
+    @PostMapping("/{tmdbId}/reviews")
+    public ResponseEntity<Review> addReview(
+            @PathVariable Long tmdbId,
+            @RequestBody Review review) {
+        Review addedReview = movieService.addReview(tmdbId, review);
+        return ResponseEntity.ok(addedReview);
     }
 
 }

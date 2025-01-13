@@ -2,11 +2,15 @@ package org.adweb.java.collection.User;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MovieShort {
-
-
     @JsonProperty("tmdb_id")
     @Field("tmdb_id")
     private Long tmdbId;
@@ -17,12 +21,6 @@ public class MovieShort {
     @JsonProperty("poster_path")
     @Field("poster_path")
     private String posterPath;
-
-    public MovieShort(Long tmdbId, String name, String posterPath) {
-        this.tmdbId = tmdbId;
-        this.name = name;
-        this.posterPath = posterPath;
-    }
 
     public Long getTmdbId() {
         return tmdbId;
