@@ -2,6 +2,7 @@ package org.adweb.java.collection.Movie;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.adweb.java.collection.User.Review;
 import org.adweb.java.document.Credit;
 import org.adweb.java.document.MovieGenre;
 import org.adweb.java.document.Trailer;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Data
 @Document(collection = "movies")
-public class Movie extends MovieGeneral{
+public class Movie extends MovieGeneral {
     @JsonProperty("status")
     private String status;
     @JsonProperty("genres")
@@ -23,4 +24,6 @@ public class Movie extends MovieGeneral{
 
     @Field(name = "trailers")
     private List<Trailer> trailers;
+    @Field("reviews")
+    private ArrayList<Review> reviews;
 }
