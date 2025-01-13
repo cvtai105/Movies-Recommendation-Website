@@ -8,6 +8,8 @@ import org.adweb.java.repository.Movie.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -59,5 +61,11 @@ public class MovieService {
     public Page<MovieUpcoming> getMovieUpComing(int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return movieUpcomingRepo.findAll(pageRequest);
+    }
+
+    public Page<Movie> findMoviesWithLatestTrailer(int page, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "release_date");
+        Pageable pageable = PageRequest.of(page, pageSize, sort);
+        return movieRepo.findMoviesWithLatestTrailer(pageable);
     }
 }

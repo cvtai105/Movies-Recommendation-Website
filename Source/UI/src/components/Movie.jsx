@@ -47,7 +47,7 @@ const Movie = ({ movie, savedMovies, props }) => {
             visible ? "fade-in" : "fade-out"
           } w-full object-cover rounded-2xl group-hover:shadow-lg group-hover:shadow-[#000B58]/70`}
           src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-          alt={movie.title}
+          alt={movie.original_title}
         />
         {isAuthenticated ? (
           <button
@@ -61,8 +61,8 @@ const Movie = ({ movie, savedMovies, props }) => {
             )}
           </button>
         ) : null}
-        <p className="hidden group-hover:flex w-full absolute bottom-0 bg-black py-3 px-2 opacity-70 rounded-b-2xl -translate-y-[50%]">
-          {movie.title}
+        <p className="hidden group-hover:flex w-full absolute bottom-0 bg-black py-3 px-2 opacity-70 rounded-b-2xl -translate-y-[75%]">
+          {movie.original_title}
         </p>
         {display ? (
           <div>

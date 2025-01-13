@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6a85cd6a-eeec-4add-918f-2296005af381" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/collection/User/Favorite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/collection/User/WatchList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/config/ProjectConfigSecurity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/document/MovieShort.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/repository/User/FavouriteRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/repository/User/WatchListRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/response/ResponseData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/response/ResponseError.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Java/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Java/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/JavaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/JavaApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/controller/MovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/controller/MovieController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Java/src/main/java/org/adweb/java/service/UserService.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="2rYuCDj6KoYVjWBprvKV1Y4IhIF" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "21120500"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6a85cd6a-eeec-4add-918f-2296005af381" name="Changes" comment="" />
+      <created>1736748200766</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1736748200766</updated>
+      <workItem from="1736748202251" duration="4000" />
+    </task>
+    <servers />
+  </component>
+</project>

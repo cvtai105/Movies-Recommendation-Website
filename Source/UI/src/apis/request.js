@@ -1,44 +1,41 @@
 const requests = {
   NowPlaying: {
-    url: `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US&page=1`,
+    url: `${import.meta.env.VITE_MOVIE_API_URL}/movies/now-playing`,
     config: {
-      accept: "application/json",
-      Authorization:
-        `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`, 
+      accept: 'application/json',
     },
   },
   Popular: {
-    url: `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US&page=1`,
+    url: `${import.meta.env.VITE_MOVIE_API_URL}/movies/popular`,
     config: {
-      accept: "application/json",
-      Authorization:
-        `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,  
+      accept: 'application/json',
     },
   },
   TopRated: {
-    url: `https://api.themoviedb.org/3/movie/top_rated?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US&page=1`,
+    url: `${import.meta.env.VITE_MOVIE_API_URL}/movies/top-rated`,
     config: {
-      accept: "application/json",
-      Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+      accept: 'application/json',
     },
   },
   Upcoming: {
-    url: `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US&page=1`,
+    url: `${import.meta.env.VITE_MOVIE_API_URL}/movies/upcoming`,
     config: {
-      accept: "application/json",
-      Authorization:
-        `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+      accept: 'application/json',
     },
   },
   Trending: {
-    day_url: `https://api.themoviedb.org/3/trending/movie/day?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US`,
-    week_url: `https://api.themoviedb.org/3/trending/movie/week?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US`,
+    day_url: `${import.meta.env.VITE_MOVIE_API_URL}/movies/trending`,
+    week_url: `${import.meta.env.VITE_MOVIE_API_URL}/movies/trending`,
     config: {
-      accept: "application/json",
-      Authorization:
-        `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+      accept: 'application/json',
     },
   },
+  Trailer: {
+    url: `${import.meta.env.VITE_MOVIE_API_URL}/movies/trailers/latest`,
+    config: {
+      accept: 'application/json',
+    },
+  }
 };
 
 export default requests;
