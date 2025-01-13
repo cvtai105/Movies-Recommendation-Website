@@ -22,7 +22,7 @@ public class FavoriteController {
 
     @PostMapping
     public Favorite addToWatchlist(@RequestBody AddMovieShortRequest request) {
-        MovieShort movieShort = new MovieShort(request.getTmdbId(), request.getName(), request.getPhotoPath());
+        MovieShort movieShort = new MovieShort(request.getTmdbId(), request.getName(), request.getPosterPath());
         return favoriteService.addMovie(
                 request.getUserId(),
                 movieShort

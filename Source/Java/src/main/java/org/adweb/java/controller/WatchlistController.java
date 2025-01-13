@@ -25,7 +25,7 @@ public class WatchlistController {
 
     @PostMapping
     public WatchList addToWatchlist(@RequestBody AddMovieShortRequest request) {
-        MovieShort movieShort = new MovieShort(request.getTmdbId(), request.getName(), request.getPhotoPath());
+        MovieShort movieShort = new MovieShort(request.getTmdbId(), request.getName(), request.getPosterPath());
         return watchlistService.addMovie(
                 request.getUserId(),
                 movieShort
