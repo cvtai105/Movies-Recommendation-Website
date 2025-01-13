@@ -4,7 +4,7 @@ import {TMDB_STATIC_FILE_PATH} from '../../const/linkToResource'
 const MovieInfo = ({ info }) => {
   console.log("info", info);
   return (
-    <div className="relative text-white text-left">
+    <div className="relative text-white text-left border bg-gray-200">
       <section className="flex m-2 h-screen py-4">
         <div className="h-full w-[calc(100vh*9/16)] mx-4">
           <img
@@ -29,8 +29,8 @@ const MovieInfo = ({ info }) => {
                   </p>
                 )}
                 <ul className="flex flex-row border-r-2 pr-2">
-                  {info?.genres.map((g, index) => {
-                    if (index == info.genres.length - 1)
+                  {info?.genres?.map((g, index) => {
+                    if (index == info?.genres.length - 1)
                       return <li className="ml-2">{g.name}</li>;
                     else return <li className="ml-2">{g.name}, </li>;
                   })}

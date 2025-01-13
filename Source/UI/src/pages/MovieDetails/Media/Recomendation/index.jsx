@@ -2,8 +2,8 @@ import React from 'react'
 
 const Recomendation = () => {
   return (
-    <div>
-        Recomendation
+    <div className="border shadow-md w-full my-2">
+        
     </div>
   )
 }
