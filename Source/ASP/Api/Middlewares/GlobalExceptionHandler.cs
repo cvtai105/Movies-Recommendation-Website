@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Application.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +38,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IHos
         return exception switch
         {
             NotImplementedException => (501, "This api is still under development"),
-            InvalidInputException e => (400, e.Message),
+            ArgumentException => (400, "Invalid arguments"),
+            KeyNotFoundException => (404, "Resource not found"),
             _ => (500, "An unhandled error occurred")
         };
     }

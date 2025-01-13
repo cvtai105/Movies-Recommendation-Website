@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "../AppContext";
-import facebook_icon from "../assets/facebook-icon.png";
-import google_icon from "../assets/google-icon.png";
-import { GOOGLE_REDIRECT_URI } from "../const/uris";
-import { validateEmail, validateName, validatePassword } from "../utils/validateInputs";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AppContext } from '../AppContext';
+import facebook_icon from '../assets/facebook-icon.png';
+import google_icon from '../assets/google-icon.png';
+import { GOOGLE_REDIRECT_URI } from '../const/uris';
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from '../utils/validateInputs';
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const { isAuthenticated, login, userData } = useContext(AppContext);
   const [loading, setLoading] = useState(null);
@@ -26,9 +30,9 @@ function Login() {
       const response = await fetch(
         `${import.meta.env.VITE_IDENTITY_API_URL}/auth/login`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email: email, password: password }),
         }
@@ -41,7 +45,7 @@ function Login() {
 
       const data = await response.json();
       login(data.accessToken, data.refreshToken);
-      navigate("/");
+      navigate('/');
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -52,26 +56,26 @@ function Login() {
     e.preventDefault();
     var facebookEndpoint = `${import.meta.env.VITE_FACEBOOK_ENDPOINT}`;
     // Create <form> element to submit parameters to OAuth 2.0 endpoint.
-    var form = document.createElement("form");
-    form.setAttribute("method", "GET"); // Send as a GET request.
-    form.setAttribute("action", facebookEndpoint);
+    var form = document.createElement('form');
+    form.setAttribute('method', 'GET'); // Send as a GET request.
+    form.setAttribute('action', facebookEndpoint);
 
     // Parameters to pass to OAuth 2.0 endpoint.
     var params = {
       client_id: `${import.meta.env.VITE_FACEBOOK_CLIENT_ID}`,
       redirect_uri: `${import.meta.env.VITE_FACEBOOK_LOGIN_REDIRECT_URL}`,
-      response_type: "code",
-      scope: "public_profile email",
-      include_granted_scopes: "true",
+      response_type: 'code',
+      scope: 'public_profile email',
+      include_granted_scopes: 'true',
       state: `${import.meta.env.VITE_FACEBOOK_STATE}`,
     };
 
     // Add form parameters as hidden input values.
     for (var p in params) {
-      var input = document.createElement("input");
-      input.setAttribute("type", "hidden");
-      input.setAttribute("name", p);
-      input.setAttribute("value", params[p]);
+      var input = document.createElement('input');
+      input.setAttribute('type', 'hidden');
+      input.setAttribute('name', p);
+      input.setAttribute('value', params[p]);
       form.appendChild(input);
     }
 
@@ -86,9 +90,7 @@ function Login() {
     //sleep
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=openid%20email%20profile&client_id=${
       import.meta.env.VITE_GOOGLE_CLIENT_ID
-    }&redirect_uri=${
-      GOOGLE_REDIRECT_URI
-    }`;
+    }&redirect_uri=${GOOGLE_REDIRECT_URI}`;
   };
 
   return (
@@ -100,7 +102,7 @@ function Login() {
           </h2>
           <p className="mt-2 text-gray-600">You are already logged in.</p>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
             className="mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded hover:bg-green-600"
           >
             Go to Home
@@ -139,8 +141,8 @@ function Login() {
               type="submit"
               className={
                 loading
-                  ? "cursor-not-allowed px-4 py-2 bg-blue-300 text-white font-medium rounded-lg"
-                  : "px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600"
+                  ? 'cursor-not-allowed px-4 py-2 bg-blue-300 text-white font-medium rounded-lg'
+                  : 'px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600'
               }
               onClick={handleSubmit}
             >
@@ -150,25 +152,25 @@ function Login() {
               <button onClick={facebookLogin}>
                 <img src={facebook_icon} alt="facebook" className="w-[40px]" />
               </button>
-              <button onClick={(redirectGoogleAuthPage)}>
+              <button onClick={redirectGoogleAuthPage}>
                 <img src={google_icon} alt="google" className="w-[40px]" />
               </button>
             </div>
           </form>
           {error && <p className="mt-4 text-red-500">{error}</p>}
           <p className="mt-6 text-gray-600">
-            Don't have an account?{" "}
+            Don't have an account?{' '}
             <span
-              onClick={() => navigate("/register")}
+              onClick={() => navigate('/register')}
               className="text-blue-500 cursor-pointer hover:underline"
             >
               Register here
             </span>
           </p>
           <p className="mt-2 text-gray-600">
-            Forgot password?{" "}
+            Forgot password?{' '}
             <span
-              onClick={() => navigate("/password-reset")}
+              onClick={() => navigate('/password/reset')}
               className="text-blue-500 cursor-pointer hover:underline"
             >
               Reset here

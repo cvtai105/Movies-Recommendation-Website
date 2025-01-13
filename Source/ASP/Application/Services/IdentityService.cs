@@ -1,6 +1,5 @@
 using Application.DTOs;
 using Application.DTOs.IdentityDTOs;
-using Application.Exceptions;
 using Application.Extensions;
 using Application.ExternalInterfaces;
 using Application.Interfaces;
@@ -56,8 +55,10 @@ public class IdentityService : IIdentityService
                     _context.SaveChangesAsync();
                     return Task.FromResult<User?>(user);
                 }
-            } else {
-                throw new InvalidInputException("Invalid code");
+            }
+            else
+            {
+                throw new ArgumentException("Invalid code");
             }
         }
         return Task.FromResult<User?>(null);
@@ -87,32 +88,32 @@ public class IdentityService : IIdentityService
 
     public async Task<User> CreateUser(Registration param)
     {
-        var user = new User 
-            {
-                Id = Guid.NewGuid(),
-                Email = param.Email,
-                Name = param.Name,
-                Role = "User",
-                Status = "Inactive",
-                Avatar = param.Avatar
-            };
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = param.Email,
+            Name = param.Name,
+            Role = "User",
+            Status = "Inactive",
+            Avatar = param.Avatar
+        };
 
 
 
-            user.Hash = param.Password.HashPassword();
+        user.Hash = param.Password.HashPassword();
 
-            var check = _context.Users.FirstOrDefault(x => x.Email == param.Email);
+        var check = _context.Users.FirstOrDefault(x => x.Email == param.Email);
 
-            if (check != null)
-            {
-                throw new Exception("Email already exists");
-            }
+        if (check != null)
+        {
+            throw new Exception("Email already exists");
+        }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
 
 
-            return user;
+        return user;
     }
 
     public async Task<User?> GetByEmail(string email)
@@ -137,11 +138,11 @@ public class IdentityService : IIdentityService
     {
         string code = new Random().Next(100000, 999999).ToString();
 
-        string message = $"Active code: {code}";
+        string message = $"Reset password code: {code}";
 
         _memoryCache.Set($"PasswordReset_{user.Id}", code, TimeSpan.FromMinutes(15));
 
-        await _emailService.SendEmailAsync(user.Email, "Active Code Movies Recommendation Website", message);
+        await _emailService.SendEmailAsync(user.Email, "Reset Password Code Movies Recommendation Website", message);
         return true;
     }
 }

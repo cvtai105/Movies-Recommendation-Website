@@ -18,6 +18,7 @@ import UnauthorizedPage from './pages/Unauthorize';
 import MainLayout from './layouts/Main';
 import SearchPage from './pages/Search';
 import MovieDetails from './pages/MovieDetails/MovieDetails';
+import ResetPassword from './pages/ResetPassword';
 
 const routes = createRoutesFromElements(
   <>
@@ -34,6 +35,7 @@ const routes = createRoutesFromElements(
     <Route path="/oauth2/google/redirected" element={<GoogleRedirected />} />
     <Route path="/login" element={<Login />} />,
     <Route path="/register" element={<Register />} />
+    <Route path="/password/reset" element={<ResetPassword />} />
     <Route
       path="/oauth2/facebook/redirect"
       element={<FacebookOauth2RedirectHandler />}

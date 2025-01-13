@@ -1,50 +1,55 @@
 services:
-  ui:
-    build:
-      context: ./UI
-      dockerfile: Dockerfile
-    image: cvtai/mrw-ui:${UI_VERSION}
-    ports:
-      - "5173:5173"
-    environment:
-      - VITE_UI_URL=${VITE_UI_URL}
-      - VITE_API_URL=${VITE_IDENTITY_API_URL}
-      - VITE_GOOGLE_CLIENT_ID=907759503353-5v3aon6s0fdhklod6qsc6bedrt3vketk.apps.googleusercontent.com
-      - VITE_TMDB_API_KEY=b745e42d282162944bdee5b09b352958
-      - VITE_TMDB_API_URL=https://api.themoviedb.org/3
-      - VITE_TMDB_ACCESS_TOKEN=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNzQ1ZTQyZDI4MjE2Mjk0NGJkZWU1YjA5YjM1Mjk1OCIsIm5iZiI6MTczMzg2NTE2My41MzEwMDAxLCJzdWIiOiI2NzU4YWVjYjk5MzU5YjA0NjhhNDc0N2MiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.WzMAVBJs0tAWE2n1cu6wh2591xPm8QX6D8eNkTmMF38
+    ui:
+        build:
+            context: ./UI
+            dockerfile: Dockerfile
+        image: cvtai/mrw-ui:${UI_VERSION}
+        ports:
+            - "5173:5173"
+        environment:
+            - VITE_UI_URL=${VITE_UI_URL}
+            - VITE_API_URL=${VITE_IDENTITY_API_URL}
+            - VITE_GOOGLE_CLIENT_ID=907759503353-5v3aon6s0fdhklod6qsc6bedrt3vketk.apps.googleusercontent.com
+            - VITE_TMDB_API_KEY=b745e42d282162944bdee5b09b352958
+            - VITE_TMDB_API_URL=https://api.themoviedb.org/3
+            - VITE_TMDB_ACCESS_TOKEN=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNzQ1ZTQyZDI4MjE2Mjk0NGJkZWU1YjA5YjM1Mjk1OCIsIm5iZiI6MTczMzg2NTE2My41MzEwMDAxLCJzdWIiOiI2NzU4YWVjYjk5MzU5YjA0NjhhNDc0N2MiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.WzMAVBJs0tAWE2n1cu6wh2591xPm8QX6D8eNkTmMF38
 
-  asp-api:
-    build:
-      context: ./ASP
-      dockerfile: Api/Dockerfile
-    image: cvtai/mrw-asp-api:${ASP_API_VERSION}
-    ports:
-      - "5199:8080"  # Map HTTP port
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=database,1433;Database=MRW;User Id=sa;Password=MRWDatabasePassword1!;TrustServerCertificate=true
-      - JwtSettings__Secret=${JWT_SECRET}
-      - JwtSettings__Issuer=${JWT_ISSUER}
-      - JwtSettings__Audience=${JWT_AUDIENCE}
-      - GoogleAuthSettings__ClientId=${GOOGLE_CLIENT_ID}
-      - GoogleAuthSettings__ClientSecret=${GOOGLE_CLIENT_SECRET}
-      - AllowedHosts=${CORS_ALLOWED_ORIGINS}
-      - LOGGING__LogLevel__Default=Information
-      - LOGGING__LogLevel__Microsoft.AspNetCore=Warning
-    
-    depends_on:
-      - database
+    asp-api:
+        build:
+            context: ./ASP
+            dockerfile: Api/Dockerfile
+        image: cvtai/mrw-asp-api:${ASP_API_VERSION}
+        ports:
+            - "5199:8080" # Map HTTP port
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__PostgreConnection=Host=ep-summer-mode-a1edo8x9.ap-southeast-1.aws.neon.tech;Port=5432;Database=verceldb;Username=default;Password=3Qkce7WuiHDo;SSL Mode=Require
+            - JwtSettings__Secret=${JWT_SECRET}
+            - JwtSettings__Issuer=${JWT_ISSUER}
+            - JwtSettings__Audience=${JWT_AUDIENCE}
+            - GoogleAuthSettings__ClientId=${GOOGLE_CLIENT_ID}
+            - GoogleAuthSettings__ClientSecret=${GOOGLE_CLIENT_SECRET}
+            - AllowedHosts=${CORS_ALLOWED_ORIGINS}
+            - LOGGING__LogLevel__Default=Information
+            - LOGGING__LogLevel__Microsoft.AspNetCore=Warning
+            - ConnectionStrings__DatabaseProvider=PostgreSQL
+            - SendGrid__FromEmail=21120550@student.hcmus.edu.vn
+            - SendGrid__FromName=Movie Recommend Website
 
-  database:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    ports:
-      - "1433:1433"
-    environment:
-      SA_PASSWORD: "MRWDatabasePassword1!"
-      ACCEPT_EULA: "Y"
-    volumes:
-      - sql_data:/var/opt/mssql
-
-volumes:
-  sql_data:
+    maven-api:
+        build:
+            context: ./Java
+            dockerfile: Dockerfile2
+        image: cvtai/mrw-asp-api:${JAVA_API_VERSION}
+        ports:
+            - "8080:8080" # Map HTTP port
+        environment:
+            - DB_HOST=ep-blue-night-a1hhgj7z-pooler.ap-southeast-1.aws.neon.tech
+            - DB_PORT=5432
+            - DB_NAME=neondb
+            - DB_USERNAME=neondb_owner
+            - DB_PASSWORD=gQXOlYk5xnH4
+            - MONGO_DATABASE=movieapp
+            - MONGO_USER=hoangvanquoc923
+            - MONGO_PASSWORD=movieapp123
+            - MONGO_CLUSTER=cluster0.icsie.mongodb.net
