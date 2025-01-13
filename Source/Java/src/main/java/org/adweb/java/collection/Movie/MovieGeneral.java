@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
 public class MovieGeneral {
@@ -11,7 +12,8 @@ public class MovieGeneral {
     @JsonProperty("id")
     private ObjectId id;
     @JsonProperty("tmdb_id")
-    private String tmdb_id;
+    @Field("tmdb_id")
+    private String tmdbId;
     @JsonProperty("original_title")
     private String original_title;
     @JsonProperty("overview")
