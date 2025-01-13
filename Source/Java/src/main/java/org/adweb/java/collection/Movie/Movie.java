@@ -23,4 +23,7 @@ public class Movie extends MovieGeneral{
     @Field("reviews")
     private ArrayList<Review> reviews;
 
+    @JsonProperty("production_companies")
+    @Field("production_companies")
+    ArrayList<ProductCompany> productCompanies;
 }

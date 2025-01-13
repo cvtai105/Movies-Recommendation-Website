@@ -7,6 +7,7 @@ import org.adweb.java.collection.User.Review;
 import org.adweb.java.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
@@ -92,6 +93,17 @@ public class MovieController {
             @RequestBody Review review) {
         Review addedReview = movieService.addReview(tmdbId, review);
         return ResponseEntity.ok(addedReview);
+    }
+
+    @GetMapping("/{tmdbId}/similar")
+    public PagedModel<?> getMoviesWithSameGenres(
+            @PathVariable Long tmdbId,
+            @RequestParam(defaultValue = "0") int page,  // Default to page 0
+            @RequestParam(defaultValue = "10") int size,   // Default to 10 results per page
+            PagedResourcesAssembler<Movie> pagedResourcesAssembler
+    ) {
+        Page<Movie> moviesPage = movieService.findMoviesWithSameGenres(tmdbId, page, size);
+        return pagedResourcesAssembler.toModel(moviesPage);
     }
 
 }
