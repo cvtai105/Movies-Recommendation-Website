@@ -1,7 +1,6 @@
 package org.adweb.java.collection.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mongodb.RequestContext;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,16 +27,10 @@ public class WatchList {
     List<MovieShort> movieShorts;
 
 
-    public ObjectId getId() {
-        return id;
-    }
-
     public void  setId(ObjectId id) {
         this.id = id;
     }
-    public Long getUserId() {
-        return userId;
-    }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }

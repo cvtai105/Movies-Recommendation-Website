@@ -55,7 +55,7 @@ public class WatchlistService {
     }
 
     public WatchList getWatchList(Long userId) {
-        return watchlistRepo.findById(userId)
+        return watchlistRepo.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Watchlist not found for user ID: " + userId));
     }
 }
