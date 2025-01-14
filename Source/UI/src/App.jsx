@@ -19,7 +19,9 @@ import MainLayout from './layouts/Main';
 import SearchPage from './pages/Search';
 import MovieDetails from './pages/MovieDetails/MovieDetails';
 import ResetPassword from './pages/ResetPassword';
+import About from './pages/About';
 import NotFoundResource from './pages/NotFoundResource';
+
 
 const routes = createRoutesFromElements(
   <>
@@ -43,6 +45,7 @@ const routes = createRoutesFromElements(
       path="/oauth2/facebook/redirect"
       element={<FacebookOauth2RedirectHandler />}
     />
+    <Route path='/about' element={<About />} />
   </>
 );
 

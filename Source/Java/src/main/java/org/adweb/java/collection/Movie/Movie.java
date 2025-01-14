@@ -5,10 +5,12 @@ import lombok.*;
 import org.adweb.java.collection.User.Review;
 import org.adweb.java.document.Credit;
 import org.adweb.java.document.MovieGenre;
+import org.adweb.java.document.Trailer;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Document(collection = "movies")
@@ -23,4 +25,6 @@ public class Movie extends MovieGeneral{
     @Field("reviews")
     private ArrayList<Review> reviews;
 
+    @Field("trailer")
+    private List<Trailer> trailers;
 }

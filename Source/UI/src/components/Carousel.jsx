@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Carousel(props) {
   const movies = props.data;
   const [index, setIndex] = useState(0);
   const length = movies.length;
+  const navigate = useNavigate();
 
   function previousMovies() {
     if (index === 0) {
@@ -16,6 +18,10 @@ function Carousel(props) {
     if (index === length - 1) {
       setIndex(0);
     } else setIndex(index + 1);
+  }
+
+  function handleClick() {
+    navigate('/movies/' + movies[index].tmdb_id);
   }
 
   return (
@@ -50,6 +56,7 @@ function Carousel(props) {
           <button
             className="px-4 py-2 rounded-[20px] border-[1px] text-slate-300 border-slate-300 hover:bg-white hover:text-black"
             value={movies[index].id}
+            onClick={handleClick}
           >
             Detail
           </button>
