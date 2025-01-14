@@ -13,9 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 
+builder.Services.ConfigureSwaggerServices();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.ConfigureSwaggerServices();
 
 // Cấu hình dịch vụ logging
 builder.Logging.ClearProviders();

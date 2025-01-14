@@ -93,13 +93,20 @@ public class Auth : Controller
     {
         if (string.IsNullOrEmpty(code))
         {
-            return BadRequest("Verification code is required.");
+            return BadRequest(
+                new
+                {
+                    Message = "Verification code is required.",
+                    status = 400
+                }
+            );
         }
-        if (!Guid.TryParse(userId, out var userIdGuid))
+        if (!int.TryParse(userId, out var userIdGuid))
         {
             return BadRequest(new
             {
-                Message = "Invalid user id"
+                title = "Invalid user id",
+                status = 400
             });
         }
 
@@ -108,6 +115,8 @@ public class Auth : Controller
         {
             return BadRequest(new
             {
+                title = "Invalid verification code",
+                status = 400,
                 Message = "Invalid verification code"
             });
         }
@@ -168,7 +177,7 @@ public class Auth : Controller
                 Status = 400,
             });
         }
-        if (req.UserId == Guid.Empty)
+        if (req.UserId == 0)
         {
             return BadRequest(
                 new

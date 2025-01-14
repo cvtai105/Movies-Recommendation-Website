@@ -7,7 +7,7 @@ namespace Application.DTOs;
 
 public class ResetPasswordRequest
 {
-    public Guid UserId { get; set; }
+    public int UserId { get; set; } = 0;
     public string Password { get; set; } = null!;
     public string Code { get; set; } = null!;
 }

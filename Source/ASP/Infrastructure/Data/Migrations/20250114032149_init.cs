@@ -4,10 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Data.PostgresMigrations
+namespace Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,12 +46,14 @@ namespace Infrastructure.Data.PostgresMigrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     Avatar = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Hash = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true)
+                    Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Role = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,7 +95,7 @@ namespace Infrastructure.Data.PostgresMigrations
                     Search = table.Column<string>(type: "text", nullable: false),
                     Proccessed_search = table.Column<string>(type: "text", nullable: false),
                     Search_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,7 +118,7 @@ namespace Infrastructure.Data.PostgresMigrations
                     Favorite = table.Column<bool>(type: "boolean", nullable: false),
                     Watched = table.Column<bool>(type: "boolean", nullable: false),
                     Watched_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
                     MovieId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -138,8 +140,8 @@ namespace Infrastructure.Data.PostgresMigrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Avatar", "Email", "Hash", "Name", "Status" },
-                values: new object[] { new Guid("9e4f49fe-0783-44c6-9061-53d2ed84fab3"), null, "user@example.com", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", "User 1", "Active" });
+                columns: new[] { "Id", "Avatar", "Email", "Hash", "Name", "Role", "Status" },
+                values: new object[] { 1, null, "user@example.com", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", "User 1", "User", "Active" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_MovieGenres_GenreId",

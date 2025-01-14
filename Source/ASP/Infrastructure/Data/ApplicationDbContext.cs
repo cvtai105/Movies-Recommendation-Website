@@ -20,9 +20,9 @@ namespace Infrastructure.Data
             base.OnModelCreating(builder);
 
             builder.Entity<User>().HasData( //all passwords are "123456"
-                new User { Id = Guid.Parse("9e4f49fe-0783-44c6-9061-53d2ed84fab3"), Role="User", Email = "user@example.com", Hash = "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", Name = "User 1", Status = "Active" }
+                new User { Id = 1, Role = "User", Email = "user@example.com", Hash = "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", Name = "User 1", Status = "Active" }
             );
-           
+
         }
 
     }

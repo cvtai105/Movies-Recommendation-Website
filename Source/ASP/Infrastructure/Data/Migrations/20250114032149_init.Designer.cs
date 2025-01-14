@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Data.PostgresMigrations
+namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250105042326_Initial")]
-    partial class Initial
+    [Migration("20250114032149_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -115,8 +115,8 @@ namespace Infrastructure.Data.PostgresMigrations
                     b.Property<DateTime>("Search_date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -127,9 +127,11 @@ namespace Infrastructure.Data.PostgresMigrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Avatar")
                         .HasMaxLength(200)
@@ -148,6 +150,10 @@ namespace Infrastructure.Data.PostgresMigrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Status")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
@@ -159,10 +165,11 @@ namespace Infrastructure.Data.PostgresMigrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9e4f49fe-0783-44c6-9061-53d2ed84fab3"),
+                            Id = 1,
                             Email = "user@example.com",
                             Hash = "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=",
                             Name = "User 1",
+                            Role = "User",
                             Status = "Active"
                         });
                 });
@@ -184,8 +191,8 @@ namespace Infrastructure.Data.PostgresMigrations
                     b.Property<double?>("Rating")
                         .HasColumnType("double precision");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Watched")
                         .HasColumnType("boolean");
