@@ -1,75 +1,85 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
 export const AppContext = createContext(); // Tạo context mới
 export const AppContextProvider = ({ children }) => {
   const [jwt, setJwt] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
+    const token = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
     if (token) {
       login(token, refreshToken);
     }
   }, []);
 
+  const isAuthenticated = () => {
+    console.log('User Data: ', userData);
+    console.log('Current time: ', Math.floor(Date.now() / 1000));
+    console.log('Token exp: ', userData?.exp);
+    console.log(
+      'Is authenticated: ',
+      userData && userData.exp > Math.floor(Date.now() / 1000)
+    );
+    if (userData == null || userData.exp == null) {
+      return false;
+    }
+    return userData.exp > Math.floor(Date.now() / 1000);
+  };
+
   const login = (access_token, refresh_token) => {
-    localStorage.setItem("refreshToken", refresh_token);
+    localStorage.setItem('refreshToken', refresh_token);
     //decode token to get user data
     setJwt(access_token);
-    const base64Url = access_token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const base64Url = access_token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const userData = JSON.parse(atob(base64));
     setUserData(userData);
-    console.log("User Data: ", userData);
-    setIsAuthenticated(true);
-    console.log("Logged In: ", isAuthenticated);
-    localStorage.setItem("accessToken", access_token);
+    console.log('User Data: ', userData);
+    localStorage.setItem('accessToken', access_token);
   };
 
   const logout = () => {
     setUserData(null);
     setJwt(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   };
 
   async function fetchWithAuth(url, options = {}) {
     //TODO: handle refresh token
-    console.log("Fetch with auth header:", url, options);
+    console.log('Fetch with auth header:', url, options);
     const config = {
       ...options,
       headers: {
         Authorization: `Bearer ${jwt}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         ...(options.headers || {}),
       },
     };
 
-    console.log("Fetch with auth header:", config);
+    console.log('Fetch with auth header:', config);
 
     try {
       const response = await fetch(url, config);
       if (!response.status === 401) {
         //get refresh token
-        const refreshToken = localStorage.getItem("refreshToken");
+        const refreshToken = localStorage.getItem('refreshToken');
         if (!refreshToken) {
-          throw new Error("No refresh token found");
+          throw new Error('No refresh token found');
         }
         //fetch new access token
         const response2 = await fetch(
           `${process.env.REACT_APP_API_URL}/api/auth/refresh?token=${refreshToken}`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         );
         if (!response2.ok) {
-          throw new Error("Failed to refresh token");
+          throw new Error('Failed to refresh token');
         }
         const data = await response2.json();
         login(data.access_token, data.refresh_token);
@@ -84,7 +94,7 @@ export const AppContextProvider = ({ children }) => {
       }
       return await response.json();
     } catch (error) {
-      console.error("Fetch with auth header failed:", error);
+      console.error('Fetch with auth header failed:', error);
       throw error; // Re-throw error for caller to handle
     }
   }

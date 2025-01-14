@@ -23,6 +23,7 @@ builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
@@ -44,7 +45,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.ConfigureOptions<JwtOptionConfig>();
 builder.Services.ConfigureOptions<JwtValidateConfig>();
 builder.Services.AddAuthorization();
-    
+
 var app = builder.Build();
 
 // if (app.Environment.IsDevelopment())
@@ -56,14 +57,15 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
+
 app.MapControllers();
+app.UseExceptionHandler();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
-
 app.UseAuthentication();
 app.UseAuthorization();
 

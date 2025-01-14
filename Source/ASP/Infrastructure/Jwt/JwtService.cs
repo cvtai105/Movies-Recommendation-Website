@@ -37,10 +37,11 @@ namespace Infrastructure.Identity
             {
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(JwtRegisteredClaimNames.Email, user.Email),
-                new(JwtRegisteredClaimNames.Sub, user.Email),
+                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new(ClaimTypes.Role, user.Role),
                 new Claim("userId", user.Id.ToString()),
                 new Claim("picture", user.Avatar?? ""),
+                new Claim("name", user.Name),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 

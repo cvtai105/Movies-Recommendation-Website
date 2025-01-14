@@ -1,4 +1,3 @@
-// ProjectName.Infrastructure/DependencyInjection.cs
 using Microsoft.Extensions.DependencyInjection;
 using Application.Interfaces;
 using Infrastructure.Identity;
@@ -19,23 +18,24 @@ public static class DependencyInjection
         var provider = builder.Configuration.GetConnectionString("DatabaseProvider");
         var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<string>>();
 
-        builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>{
+        builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+        {
             if (provider == "LocalPostgreSQL")
             {
                 logger.LogInformation("Using Local PostgreSQL");
-                connectionString = builder.Configuration.GetConnectionString("LocalPostgreSQLConnection")?? "";
+                connectionString = builder.Configuration.GetConnectionString("LocalPostgreSQLConnection") ?? "";
                 options.UseNpgsql(connectionString);
             }
             else if (provider == "PostgreSQL")
             {
                 logger.LogInformation("Using PostgreSQL");
-                connectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection")?? "";
+                connectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection") ?? "";
                 options.UseNpgsql(connectionString);
             }
             else
             {
                 logger.LogInformation("Using SqlServer");
-                connectionString = builder.Configuration.GetConnectionString("DefaultConnection")?? "";
+                connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
                 options.UseSqlServer(connectionString);
             }
         });

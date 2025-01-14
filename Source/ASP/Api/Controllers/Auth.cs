@@ -128,20 +128,31 @@ public class Auth : Controller
     {
         if (string.IsNullOrEmpty(email))
         {
-            return BadRequest("Email is required.");
+            return BadRequest(
+                new
+                {
+                    Title = "Email is required.",
+                    Status = 400,
+                }
+            );
         }
 
         var user = await _identityService.GetByEmail(email);
         if (user == null)
         {
-            return BadRequest("Email is not registered.");
+            return BadRequest(new
+            {
+                Title = "Email is not registered.",
+                Status = 400,
+            });
         }
 
         var _ = await _identityService.SendResetPasswordCodeViaEmail(user);
 
         return Ok(new
         {
-            Message = "Reset password email sent successfully",
+            Status = 200,
+            Title = "Reset password email sent successfully",
             UserId = user.Id
         });
     }
@@ -151,17 +162,33 @@ public class Auth : Controller
     {
         if (string.IsNullOrEmpty(req.Code))
         {
-            return BadRequest("Verification code is required.");
+            return BadRequest(new
+            {
+                Title = "Verification code is required.",
+                Status = 400,
+            });
         }
         if (req.UserId == Guid.Empty)
         {
-            return BadRequest("Invalid user id");
+            return BadRequest(
+                new
+                {
+                    Title = "Invalid user id",
+                    Status = 400,
+                }
+            );
         }
 
         var user = await _identityService.ConfirmResetPassword(req);
         if (user == null)
         {
-            return BadRequest("Invalid verification code");
+            return BadRequest(
+                new
+                {
+                    Title = "Invalid verification code",
+                    Status = 400,
+                }
+            );
         }
 
         var accessToken = _jwtService.GenerateAccessToken(user);
