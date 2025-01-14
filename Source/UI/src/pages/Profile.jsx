@@ -23,7 +23,6 @@ const Profile = () => {
       </div>
       <MovieGallery title={"Favorite Movies"} url={"/favorite"} />
       <MovieGallery title={"Watch List"} url={"/watchlist"} />
-      <RatingGallery title={"Rated Movies"} url={"/rated"} />
     </div>
   );
 };
