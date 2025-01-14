@@ -60,7 +60,7 @@ export async function getMovieDetails(tmdbId) {
         },
     });
     const data = await response.json()
-    console.log("get movie details response: ", data);
+    // console.log("get movie details response: ", data);
     return data;
 }
 
@@ -73,8 +73,20 @@ export async function getRecommendationOnGenre(tmdbId) {
     });
     const data = await response.json()
     const result = data._embedded.movieList
-    console.log("get movie similar: ", result);
+    // console.log("get movie similar: ", result);
     return result;
+}
+
+export async function getRecomendationOnVector(tmdbId) {
+    const url = `${JAVA_SERVICE_API}/${tmdbId}/similar-vector`;
+    const response = await fetch(url, {
+        headers: {
+            // Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+        },
+    });
+    const data = await response.json()
+    const result = data._embedded.movieList
+    console.log("get movie vector: ", result);
 }
 
 export async function getRecommendation(movieId) {

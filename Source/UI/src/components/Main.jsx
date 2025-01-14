@@ -1,17 +1,18 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import requests from "../apis/request.js";
-import Carousel from "./Carousel";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import requests from '../apis/request.js';
+import Carousel from './Carousel';
 
 const Main = () => {
   const [movies, setMovies] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const result = await axios.get(
-        requests.Popular.url,
+      const response = await axios.get(
+        requests.Popular.url + '?page=1&size=20',
         requests.Popular.config
       );
-      setMovies(result.data.results);
+      const movies = response.data.data.movies;
+      setMovies(movies);
     }
     fetchData();
   }, []);

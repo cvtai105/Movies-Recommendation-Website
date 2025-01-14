@@ -23,9 +23,10 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IHos
             Extensions = { ["traceId"] = traceId },
             Instance = $"{httpContext.Request.Method} {httpContext.Request.Path}"
         };
-
-        problemDetails.Detail = exception.Message;
-
+        if (!environment.IsProduction())
+        {
+            problemDetails.Detail = exception.Message;
+        }
 
         await httpContext.Response
             .WriteAsJsonAsync(problemDetails, cancellationToken);
@@ -37,7 +38,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IHos
         return exception switch
         {
             NotImplementedException => (501, "This api is still under development"),
-            ArgumentException => (400, "Wrong input"),
+            ArgumentException => (400, "Invalid arguments"),
             KeyNotFoundException => (404, "Resource not found"),
             _ => (500, "An unhandled error occurred")
         };

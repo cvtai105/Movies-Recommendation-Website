@@ -16,11 +16,16 @@ const Recomendation = () => {
       setRecomendOnGenres(movieResponse);
     };
 
+    const fechOnVectorSearch = async () => {
+      const movieResponse = await getRecomendationOnVector(id);
+      setRecomendOnVectorSearch(movieResponse);
+    };
+
     fetchOnGenre();
   }, [id]);
 
   return (
-    <div className="border shadow-md w-full my-2">
+    <div className="border shadow-md w-full p-0">
       <MovieCarousel
         movies={recomendOnGenres}
         title={'Explore Similar Genre'}

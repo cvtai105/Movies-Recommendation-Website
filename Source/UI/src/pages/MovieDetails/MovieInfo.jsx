@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Modal from 'react-modal';
 import Rating from 'react-rating-stars-component';
-import { ToastContainer, toast } from "react-toastify";
-import { TMDB_STATIC_FILE_PATH } from '../../const/linkToResource';
+import { ToastContainer, toast } from 'react-toastify';
+
+import {
+  JAVA_API,
+  TMDB_STATIC_FILE_PATH,
+} from '../../const/linkToResource';
+import axios from 'axios';
+import { AppContext } from '../../AppContext';
 
 const MovieInfo = ({ info }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rating, setRating] = useState(0);
+  const { userData, isAuthenticated } = useContext(AppContext);
 
   // Open and close modal handlers
   const openModal = () => setIsModalOpen(true);
@@ -14,21 +21,80 @@ const MovieInfo = ({ info }) => {
 
   // Handle rating submission
   const handleRatingChange = (newRating) => {
-    setRating(newRating);
+    setRating(newRating * 20);
   };
 
-  const submitRating = () => {
-    toast.success("You reated this movie.");
+  const submitRating = async () => {
+
+    if (!isAuthenticated()) {
+      toast.warning('Please login to rate movie.');
+      return;
+    }
+
+    const timeNow = new Date();
+
+    const reqBody = {
+      rating: rating,
+      created_at: timeNow.toISOString(),
+      UserID: parseInt(userData.userId),
+      tmdb_id: info.tmdb_id,
+      name: info.original_title,
+      poster_path: info.poster_path,
+    };
+
+    console.log("req", reqBody);
+
+    try {
+      const response = await axios.post(`${JAVA_API}/rating`, reqBody);
+      console.log("response", response);  
+      toast.success('Rating submitted successfully with ' + rating + ' score');
+    } catch (error) {
+      toast.warning('Rating failed. ' + error.message);
+    }
     closeModal();
   };
 
-  const handleFavoriteClick = () => {
-    toast.success("Movie added to favorites."); 
+  const handleFavoriteClick = async () => {
+    if (!isAuthenticated()) {
+      toast.warning('Please login to add movie to Favorite.');
+      return;
+    }
+
+    const requestBody = {
+      UserID: parseInt(userData.userId),
+      tmdb_id: info.tmdb_id,
+      name: info.original_title,
+      poster_path: info.poster_path,
+    };
+
+    try {
+      await axios.post(`${JAVA_API}/favorite`, requestBody);
+      toast.success('Movie added to Favorite.');
+    } catch (error) {
+      toast.warning('Failed to add movie to Favorite.');
+    }
   };
 
-  const handleWatchlistClick = () => {
-    toast.success("Movie added to watchlist."); 
-  }
+  const handleWatchlistClick = async () => {
+    if (!isAuthenticated()) {
+      toast.warning('Please login to add movie to watchlist.');
+      return;
+    }
+
+    const requestBody = {
+      UserID: parseInt(userData.userId),
+      tmdb_id: info.tmdb_id,
+      name: info.original_title,
+      poster_path: info.poster_path,
+    };
+
+    try {
+      await axios.post(`${JAVA_API}/watchlist`, requestBody);
+      toast.success('Movie added to watchlist.');
+    } catch (error) {
+      toast.warning('Failed to add movie to watchlist.');
+    }
+  };
 
   return (
     <div className="relative text-white text-left border bg-gray-200">
@@ -40,22 +106,24 @@ const MovieInfo = ({ info }) => {
             alt={info?.title}
           />
         </div>
-        <div className="w-full bg-no-repeat bg-contain bg-center opacity-60 text-white mr-4">
+        <div className="w-full bg-no-repeat bg-contain bg-center text-slate-800 mr-4">
           <img
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover opacity-30 object-center"
             src={`${TMDB_STATIC_FILE_PATH}/${info?.backdrop_path}`}
             alt={info?.title}
           />
           <section className="absolute sm:top-[50%] md:top-[10%] flex flex-col gap-4 mx-4 p-4">
             <div>
-              <h1 className="text-4xl font-bold text-left">{info?.title} </h1>
+              <h1 className="text-4xl font-bold text-left">
+                {info?.original_title}{' '}
+              </h1>
               <div className="flex flex-row">
                 {!!info?.release_date && (
-                  <p className="text-slate-300 border-r-2 pr-2">
+                  <p className="text-slate-500 border-r-2 border-gray-300 pr-2">
                     Released {info?.release_date}
                   </p>
                 )}
-                <ul className="flex flex-row border-r-2 pr-2">
+                <ul className="flex flex-row border-r-2 border-gray-300 pr-2">
                   {info?.genres?.map((g, index) => {
                     if (index == info?.genres.length - 1)
                       return <li className="ml-2">{g.name}</li>;
@@ -79,7 +147,7 @@ const MovieInfo = ({ info }) => {
                   viewBox="0 0 36 36"
                 >
                   <circle
-                    className="text-slate-500"
+                    className="text-slate-500 "
                     stroke="currentColor"
                     strokeWidth="2"
                     fill="slate-500"
@@ -130,9 +198,10 @@ const MovieInfo = ({ info }) => {
             <div className="flex space-x-4">
               {/* Love Button */}
               <div className="relative">
-                <button 
-                onClick={handleFavoriteClick}
-                className="w-16 h-16 flex items-center justify-center bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600">
+                <button
+                  onClick={handleFavoriteClick}
+                  className="w-16 h-16 flex items-center justify-center bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-8 h-8"
@@ -149,9 +218,10 @@ const MovieInfo = ({ info }) => {
 
               {/* Wishlist Button */}
               <div className="relative">
-                <button 
-                onClick={handleWatchlistClick}
-                className="w-16 h-16 flex items-center justify-center bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600">
+                <button
+                  onClick={handleWatchlistClick}
+                  className="w-16 h-16 flex items-center justify-center bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
                   {/* Wishlist Icon (Heart Outline) */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -243,7 +313,7 @@ const MovieInfo = ({ info }) => {
           </section>
         </div>
         {/* Toast Notification Container */}
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       </section>
     </div>
   );
