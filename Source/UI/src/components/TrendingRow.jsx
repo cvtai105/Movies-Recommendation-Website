@@ -1,27 +1,28 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import Movie from "./Movie";
-import { IoMdArrowDropright } from "react-icons/io";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import ToggleButton from "./ToggleButton.jsx";
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import Movie from './Movie';
+import { IoMdArrowDropright } from 'react-icons/io';
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import ToggleButton from './ToggleButton.jsx';
+import { AppContext } from '../AppContext.jsx';
 
 const TrendingRow = (props) => {
   const request = props.request;
   const title = props.title;
   const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [selection, setSelection] = useState("Today");
+  const [selection, setSelection] = useState('Today');
 
   useEffect(() => {
     // Lấy danh sách film yêu thích của user rồi nạp vào chương trình
     async function fetchData() {
       try {
-        //const result = await axios.get(request.day_url, request.config);
-        const result = await axios.get(
-          selection === "Today" ? request.day_url : request.week_url,
+        const response = await axios.get(
+          selection === 'Today' ? request.day_url : request.week_url + '?page=1&size=20',
           request.config
         );
-        setMovies(result.data.results);
+        const movies = response.data.data.movies;
+        setMovies(movies);
       } catch (error) {
         console.log(error.message);
       }
@@ -59,13 +60,13 @@ const TrendingRow = (props) => {
       </div>
       <div
         id={`slider_${props.rowID}`}
-        className="w-full h-full scrollbar-hide overflow-y-hidden whitespace-nowrap scroll-smooth"
+        className="w-full h-full scrollbar-hidden overflow-y-hidden whitespace-nowrap scroll-smooth"
       >
         {movies.length !== 0 &&
           movies.map((movie) => {
             return (
               <Movie
-                key={`${selection}-${movie.id || movie.id_film}`}
+                key={Math.random()}
                 movie={movie}
                 savedMovies={savedMovies}
               />
