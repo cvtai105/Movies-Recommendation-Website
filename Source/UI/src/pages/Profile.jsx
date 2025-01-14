@@ -21,7 +21,9 @@ const Profile = () => {
         </h2>
         <p className="text-gray-600">{userData.email}</p>
       </div>
-      <MovieGallery />
+      <MovieGallery title={"Favorite Movies"} url={"/favorite"} />
+      <MovieGallery title={"Watch List"} url={"/watchlist"} />
+      <RatingGallery title={"Rated Movies"} url={"/rated"} />
     </div>
   );
 };

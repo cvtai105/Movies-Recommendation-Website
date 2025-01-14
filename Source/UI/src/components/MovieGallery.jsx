@@ -1,41 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import movieClient from '../apis/movieClient.js';
+import { AppContext, useAppContext } from '../AppContext.jsx';
+import { Link } from 'react-router-dom';
 
-const movies = [
-  { id: 1, title: 'Movie 1', poster: 'https://picsum.photos/200/300' },
-  { id: 2, title: 'Movie 2', poster: 'https://picsum.photos/200/300' },
-  { id: 3, title: 'Movie 3', poster: 'https://picsum.photos/200/300' },
-  { id: 4, title: 'Movie 4', poster: 'https://picsum.photos/200/300' },
-  { id: 5, title: 'Movie 5', poster: 'https://picsum.photos/200/300' },
-  { id: 6, title: 'Movie 6', poster: 'https://picsum.photos/200/300' },
-  { id: 7, title: 'Movie 7', poster: 'https://picsum.photos/200/300' },
-  { id: 8, title: 'Movie 8', poster: 'https://picsum.photos/200/300' },
-  // Thêm danh sách phim khác
-];
-
-const MovieGallery = () => {
+const MovieGallery = ({ title, url, props }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [displayeWatchlist, setDisplayeWatchlist] = useState([]);
-  const [displayedFavourite, setDisplayedFavourite] = useState([]);
-  const [displayedRatingList, setDisplayRatingList] = useState([]);
+  const [movies, setMovies] = useState([]);
   const moviesPerPage = 4;
+  const { userData } = useAppContext(AppContext);
 
-  const totalMovies = movies.length;
-  const totalPages = Math.ceil(totalMovies / moviesPerPage);
+  const length = movies.length;
+  const totalPages = Math.ceil(length / moviesPerPage);
 
   useEffect(() => {
     // Gọi API để lấy danh sách yêu thíc
-    async function getFavouriteList() {
-      const response = await movieClient.get('/favourite/6');
-      console.log(response);
+    async function getMovies() {
+      await movieClient
+        .get(`${url}/${userData.userId}`)
+        .then((response) => {
+          setMovies(response.data.movie_shorts);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-    getFavouriteList();
-  }, [])
+    getMovies();
+  }, []);
 
   const displayedMovies = movies.slice(
     (currentPage - 1) * moviesPerPage,
     currentPage * moviesPerPage
   );
+
+  console.log(movies);
+  console.log(displayedMovies);
 
   const handlePageClick = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -44,30 +42,30 @@ const MovieGallery = () => {
   };
 
   return (
-    <div className="min-h-screen min-w-full bg-gray-100 px-32 py-6">
+    <div className="max-h-[400px] min-w-full bg-gray-100 px-32 py-2 mb-10">
       {/* Header */}
-      <div className="text-start text-2xl font-bold text-gray-800">
-        Movie Gallery
-      </div>
+      <div className="text-start text-2xl font-bold text-gray-800">{title}</div>
       {/* Movie List */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
         {displayedMovies.map((movie) => (
           <div
-            key={movie.id}
+            key={movie.tmdb_id}
             className="relative bg-white rounded-lg shadow-md overflow-hidden group hover:shadow-lg transition-transform transform hover:scale-105 hover:cursor-pointer"
           >
             <img
-              src={movie.poster}
-              alt={movie.title}
+              src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+              alt={movie.name}
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-              <span className="text-white text-lg font-semibold border border-white rounded-full px-4 py-2">
-                Detail
-              </span>
+              <Link to={`/movies/${movie.tmdb_id}`}>
+                <span className="text-white text-lg font-semibold border border-white rounded-full px-4 py-2">
+                  Detail
+                </span>
+              </Link>
             </div>
             <p className="text-center text-gray-700 font-medium py-2">
-              {movie.title}
+              {movie.name}
             </p>
           </div>
         ))}
