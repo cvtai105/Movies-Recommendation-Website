@@ -15,13 +15,13 @@ const MovieCarousel = ({ movies, title }) => {
 
   if (!movies) return (<p className="text-gray">Loading...</p>)
   return (
-    <div className="mx-auto w-[90%] h-[300px] flex flex-col gap-y-4 justify-around items-start relative group/item my-4 ">
+    <div className="mx-auto w-full p-2 h-[300px] flex flex-col justify-around items-start relative group/item">
       <MdChevronLeft
         onClick={moveSlideToLeft}
         className="cursor-pointer hidden group-hover/item:block z-30 absolute top-2/4 -translate-y-[25%] text-4xl -left-5 rounded-3xl bg-gray-400 opacity-50 hover:opacity-100  text-white"
       />
       <div className="flex flex-row justify-between w-full">
-        <h1 className="text-2xl row-title py-2 px-3 relative cursor-pointer">
+        <h1 className="text-2xl my-2 row-title relative cursor-pointer">
           {title} <IoMdArrowDropright className="inline" />
         </h1>
       </div>

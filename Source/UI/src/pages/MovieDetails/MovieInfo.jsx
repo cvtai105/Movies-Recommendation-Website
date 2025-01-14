@@ -14,11 +14,12 @@ const MovieInfo = ({ info }) => {
 
   // Handle rating submission
   const handleRatingChange = (newRating) => {
-    setRating(newRating);
+    setRating(newRating*20);
   };
 
   const submitRating = () => {
     toast.success("You reated this movie.");
+    alert(`${rating} score.`);
     closeModal();
   };
 
@@ -40,22 +41,22 @@ const MovieInfo = ({ info }) => {
             alt={info?.title}
           />
         </div>
-        <div className="w-full bg-no-repeat bg-contain bg-center opacity-60 text-white mr-4">
+        <div className="w-full bg-no-repeat bg-contain bg-center text-slate-800 mr-4">
           <img
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover opacity-30 object-center"
             src={`${TMDB_STATIC_FILE_PATH}/${info?.backdrop_path}`}
             alt={info?.title}
           />
           <section className="absolute sm:top-[50%] md:top-[10%] flex flex-col gap-4 mx-4 p-4">
             <div>
-              <h1 className="text-4xl font-bold text-left">{info?.title} </h1>
+              <h1 className="text-4xl font-bold text-left">{info?.original_title} </h1>
               <div className="flex flex-row">
                 {!!info?.release_date && (
-                  <p className="text-slate-300 border-r-2 pr-2">
+                  <p className="text-slate-500 border-r-2 border-gray-300 pr-2">
                     Released {info?.release_date}
                   </p>
                 )}
-                <ul className="flex flex-row border-r-2 pr-2">
+                <ul className="flex flex-row border-r-2 border-gray-300 pr-2">
                   {info?.genres?.map((g, index) => {
                     if (index == info?.genres.length - 1)
                       return <li className="ml-2">{g.name}</li>;
@@ -79,7 +80,7 @@ const MovieInfo = ({ info }) => {
                   viewBox="0 0 36 36"
                 >
                   <circle
-                    className="text-slate-500"
+                    className="text-slate-500 "
                     stroke="currentColor"
                     strokeWidth="2"
                     fill="slate-500"

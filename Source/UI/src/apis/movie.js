@@ -77,6 +77,18 @@ export async function getRecommendationOnGenre(tmdbId) {
     return result;
 }
 
+export async function getRecomendationOnVector(tmdbId) {
+    const url = `${JAVA_SERVICE_API}/${tmdbId}/similar-vector`;
+    const response = await fetch(url, {
+        headers: {
+            // Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+        },
+    });
+    const data = await response.json()
+    const result = data._embedded.movieList
+    console.log("get movie vector: ", result);
+}
+
 export async function getRecommendation(movieId) {
     const url = `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
     const response = await fetch(url, {
