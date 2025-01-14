@@ -9,7 +9,7 @@ const MovieDetails = () => {
   const [movieData, setMovieData] = useState();
   const navigate = useNavigate();
 
-  console.log('movie details data', movieData);
+  // console.log('movie details data', movieData);
   useEffect(() => {
     if (!id) {
       return <h1>The movie id is undefine.</h1>;

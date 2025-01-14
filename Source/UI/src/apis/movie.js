@@ -60,7 +60,7 @@ export async function getMovieDetails(tmdbId) {
         },
     });
     const data = await response.json()
-    console.log("get movie details response: ", data);
+    // console.log("get movie details response: ", data);
     return data;
 }
 
@@ -73,7 +73,7 @@ export async function getRecommendationOnGenre(tmdbId) {
     });
     const data = await response.json()
     const result = data._embedded.movieList
-    console.log("get movie similar: ", result);
+    // console.log("get movie similar: ", result);
     return result;
 }
 
