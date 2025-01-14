@@ -13,8 +13,8 @@ public interface IIdentityService
     Task<User> CreateUser(Registration info);
     Task<User?> GetByEmail(string email);
     Task<bool> SendActiveCodeViaEmail(User user);
-    Task<User?> ConfirmEmail(Guid userId, string code);
+    Task<User?> ConfirmEmail(int userId, string code);
     Task<bool> SendResetPasswordCodeViaEmail(User user);
     Task<User?> ConfirmResetPassword(ResetPasswordRequest request);
-    Task<User?> ActiveUser(Guid userId);
+    Task<User?> ActiveUser(int userId);
 }

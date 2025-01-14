@@ -13,6 +13,6 @@ public class UserMovie
     public bool Watched { get; set; } = false;
     public DateTime? Watched_date { get; set; } = null;
 
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
     public int MovieId { get; set; }
 }
