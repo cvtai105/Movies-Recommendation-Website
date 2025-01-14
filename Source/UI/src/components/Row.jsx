@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import Movie from "./Movie";
-import { IoMdArrowDropright } from "react-icons/io";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import Movie from './Movie';
+import { IoMdArrowDropright } from 'react-icons/io';
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 
 const Row = (props) => {
   const request = props.request;
@@ -17,8 +17,9 @@ const Row = (props) => {
 
     async function fetchData() {
       try {
-        const result = await axios.get(request.url, request.config);
-        setMovies(result.data.results);
+        const response = await axios.get(request.url + '?page=1&size=20', request.config);
+        const movies = response.data.data.movies;
+        setMovies(movies);
       } catch (error) {
         console.log(error.message);
       }
@@ -51,13 +52,13 @@ const Row = (props) => {
       </div>
       <div
         id={`slider_${props.rowID}`}
-        className="w-full h-full scrollbar-hide overflow-y-hidden whitespace-nowrap scroll-smooth"
+        className="w-full h-full scrollbar-hidden  overflow-y-hidden whitespace-nowrap scroll-smooth"
       >
         {movies.length !== 0 &&
           movies.map((movie) => {
             return (
               <Movie
-                key={movie.id || movie.id_film}
+                key={Math.random()}
                 movie={movie}
                 savedMovies={savedMovies}
               />

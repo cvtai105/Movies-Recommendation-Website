@@ -8,6 +8,7 @@ import Main from '../components/Main.jsx';
 import Row from '../components/Row.jsx';
 import requests from '../apis/request.js';
 import TrendingRow from '../components/TrendingRow.jsx';
+import Trailer from '../components/Trailer.jsx';
 
 function Home() {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ function Home() {
       <Row rowID="2" title="Now Playing" request={requests.NowPlaying} />
       <Row rowID="3" title="Top Rating" request={requests.TopRated} />
       <Row rowID="4" title="Up Coming" request={requests.Upcoming} />
+      <Trailer title="Trailer" request={requests.Trailer} />
     </>
   );
 }
