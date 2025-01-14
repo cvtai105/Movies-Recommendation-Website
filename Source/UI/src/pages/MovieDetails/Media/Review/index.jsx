@@ -4,6 +4,7 @@ import ReviewCard from './ReviewCard';
 import { AppContext } from '../../../../AppContext';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import { JAVA_API } from "../../../../const/linkToResource";
 
 const Review = ({ reviews }) => {
   const [review, setReview] = useState('');
@@ -33,14 +34,16 @@ const Review = ({ reviews }) => {
 
     try {
       // Call API to submit review
-      const respone = await axios.post(`${JAVA_API}/movies/${id}/reviews`, reviewData);
-      console.log("review response", respone);
-      if (respone.status == 200) {
-        toast.success('Movie added to Favorite.');
+      const response = await axios.post(`${JAVA_API}/movies/${id}/reviews`, reviewData);
+      console.log("review response", response);
+      if (response.status == 200) {
+        toast.success('Review submitted successfully');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2500);
       } else {
         toast.warning('Something went wrong while submitting review');
       }
-      toast.success('Review submitted successfully');
     } catch (error) {
       toast.error('Failed to submit review');
     }
