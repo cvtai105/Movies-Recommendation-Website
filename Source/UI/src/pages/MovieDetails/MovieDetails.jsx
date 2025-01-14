@@ -1,23 +1,27 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getMovieDetails } from "../../apis/movie";
-import MovieInfo from "./MovieInfo";
-import Media from "./Media"
+import { useEffect, useState } from 'react';
+import { redirect, useParams, useNavigate } from 'react-router-dom';
+import { getMovieDetails } from '../../apis/movie';
+import MovieInfo from './MovieInfo';
+import Media from './Media';
 
 const MovieDetails = () => {
   const { id } = useParams();
   const [movieData, setMovieData] = useState();
+  const navigate = useNavigate();
 
-  console.log("movie details data", movieData)
+  console.log('movie details data', movieData);
   useEffect(() => {
     if (!id) {
       return <h1>The movie id is undefine.</h1>;
     }
 
     const fetchMovie = async () => {
-      // fetch the data of the movie
       const movieResponse = await getMovieDetails(id);
-      setMovieData(movieResponse);
+      if (movieResponse.status == 500) {
+        navigate('/not-found');
+      } else {
+        setMovieData(movieResponse);
+      }
     };
 
     fetchMovie();
@@ -26,7 +30,7 @@ const MovieDetails = () => {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }, [id]);
 

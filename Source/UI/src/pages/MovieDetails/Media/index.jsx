@@ -27,7 +27,7 @@ const Media = ({ movie }) => {
               <div className="w-full m-2 p-2">
                 <p className="text-gray-500 font-mono text-left my-2 py-2">{c.name}</p>
                 <img
-                  src={`${TMDB_STATIC_FILE_PATH}${c.logoPath}`}
+                  src={c.logoPath? `${TMDB_STATIC_FILE_PATH}/${c.logoPath}` : "https://pic.onlinewebfonts.com/thumbnails/icons_98811.svg"}
                   alt={c.name}
                   className="w-[300px] w-min-[300px] h-full my-2"
                 />
