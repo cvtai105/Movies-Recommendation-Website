@@ -58,7 +58,7 @@ export const useFetch = () => {
       return response.data;
     } catch (err) {
       const status = err.response?.status;
-      const message = err.response?.data?.message;
+      const message = err.response?.data?.title;
 
       const errorMessage = getErrorMessage(status, message);
       setError(errorMessage);

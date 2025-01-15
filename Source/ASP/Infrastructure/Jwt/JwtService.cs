@@ -20,7 +20,7 @@ namespace Infrastructure.Identity
 
         public string GenerateAccessToken(User user)
         {
-            return GenerateToken(user, DateTime.UtcNow.AddHours(1));
+            return GenerateToken(user, DateTime.UtcNow.AddHours(5000));
         }
 
         public string GenerateRefreshToken(User user)
