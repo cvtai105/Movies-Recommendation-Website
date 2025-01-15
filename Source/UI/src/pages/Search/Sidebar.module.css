@@ -1,0 +1,19 @@
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: column;
+}
+
+.header {
+  padding: 16px;
+  border-bottom: 1px solid #333;
+}
+
+.nav {
+  padding: 16px;
+  flex-grow: 1;
+}
+
+

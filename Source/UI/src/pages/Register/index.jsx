@@ -83,6 +83,7 @@ function Register() {
       }
       const data = await response.json();
       login(data.accessToken, data.refreshToken);
+      NProgress.done();
       navigate('/');
     } catch (err) {
       setError(err.message);
