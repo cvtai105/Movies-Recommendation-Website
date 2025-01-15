@@ -25,7 +25,7 @@ const CastCarousel = ({ castList }) => {
       >
         {castList?.length > 0 &&
           castList?.map((c) => (
-            <Link to={`/cast/${c.id}`}>
+            <Link to={`/cast/${c.id}`} key={c.id}>
               <div
                 className={`h-full w-[140px] w-min-[140px] inline-block mr-4 relative`}
               >

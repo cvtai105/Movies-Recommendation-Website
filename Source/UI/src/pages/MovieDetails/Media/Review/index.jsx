@@ -60,6 +60,7 @@ const Review = ({ reviews }) => {
           {reviews?.length > 0 &&
             reviews?.map((r) => (
               <ReviewCard
+              key={r.author}
                 author={r.author}
                 content={r.content}
                 createdAt={r.created_at}

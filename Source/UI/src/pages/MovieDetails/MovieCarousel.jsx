@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 const MovieCarousel = ({ movies, title }) => {
   function moveSlideToLeft() {
-    let slider = document.getElementById('slider_carousel');
+    let slider = document.getElementById(`${title}`);
     slider.scrollLeft = slider.scrollLeft - 500;
   }
 
   function moveSlideToRight() {
-    let slider = document.getElementById('slider_carousel');
+    let slider = document.getElementById(`${title}`);
     slider.scrollLeft = slider.scrollLeft + 500;
   }
 
@@ -21,15 +21,15 @@ const MovieCarousel = ({ movies, title }) => {
         className="cursor-pointer hidden group-hover/item:block z-30 absolute top-2/4 -translate-y-[25%] text-4xl -left-5 rounded-3xl bg-gray-400 opacity-50 hover:opacity-100  text-white"
       />
       <div className="flex flex-row justify-between w-full">
-        <h1 className="text-2xl my-2 row-title relative cursor-pointer">
+        <h1 className="text-2xl my-2 row-title cursor-pointer">
           {title} <IoMdArrowDropright className="inline" />
         </h1>
       </div>
       <div
-        id={`slider_carousel`}
+        id={`${title}`}
         className="w-full h-full scrollbar-hide overflow-y-hidden whitespace-nowrap scroll-smooth"
       >
-        {movies?.length !== 0 &&
+        {!!movies && movies?.length !== 0 &&
           movies?.map((movie) => {
             return (
               <Link to={`/movies/${movie.tmdb_id}`} key={movie.tmdb_id}>

@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import MovieCarousel from '../../MovieCarousel';
 import { useParams } from 'react-router-dom';
-import { getRecommendationOnGenre } from '../../../../apis/movie';
+import {
+  getRecommendationOnGenre,
+  getRecomendationOnVector,
+} from '../../../../apis/movie';
 
-const Recomendation = () => {
+const Recomendation = ({ overview }) => {
   const [recomendOnGenres, setRecomendOnGenres] = useState();
   const [recomendOnVectorSearch, setRecomendOnVectorSearch] = useState();
   const { id } = useParams();
@@ -17,20 +20,27 @@ const Recomendation = () => {
     };
 
     const fechOnVectorSearch = async () => {
-      const movieResponse = await getRecomendationOnVector(id);
+      const movieResponse = await getRecomendationOnVector(overview);
       setRecomendOnVectorSearch(movieResponse);
     };
-
+    fechOnVectorSearch();
     fetchOnGenre();
   }, [id]);
 
   return (
     <div className="border shadow-md w-full p-0">
-      <MovieCarousel
-        movies={recomendOnGenres}
-        title={'Explore Similar Genre'}
-      />
-      {/* <MovieCarousel movies={recomendOnVectorSearch} title={"May Be You Should Watch"}/> */}
+      <div>
+        <MovieCarousel
+          movies={recomendOnGenres}
+          title={'Explore Similar Genre'}
+        />
+      </div>
+      <div>
+        <MovieCarousel
+          movies={recomendOnVectorSearch}
+          title={'May Be You Should Watch'}
+        />
+      </div>
     </div>
   );
 };
