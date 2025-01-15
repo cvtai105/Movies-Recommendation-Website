@@ -1,19 +1,25 @@
 package org.adweb.java.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.result.UpdateResult;
 import com.mongodb.internal.bulk.UpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.adweb.java.collection.Movie.*;
+import org.adweb.java.collection.User.MovieShort;
 import org.adweb.java.collection.User.Review;
 import org.adweb.java.document.MovieGenre;
 import org.adweb.java.repository.Movie.*;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -21,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -96,5 +103,53 @@ public class MovieService {
 
         // Find movies with matching genres and return paginated results
         return movieRepo.findByGenres(genreIds, pageRequest);
+    }
+
+    public List<Movie> findSimilarDocuments(List<Float> embedding) {
+        AggregationOperation vectorSearch = context -> new Document("$vectorSearch", new Document()
+                .append("queryVector", embedding)
+                .append("path", "overview_embedding")
+                .append("numCandidates", 100)
+                .append("limit", 5)
+                .append("index", "overviewEmbeddingIndex")
+        );
+
+        Aggregation aggregation = Aggregation.newAggregation(vectorSearch);
+        AggregationResults<Movie> results = mongoTemplate.aggregate(aggregation, "movies", Movie.class);
+
+        return results.getMappedResults();
+    }
+
+    public List<MovieShort> findSimilarMovies(List<Float> embedding) {
+
+            // Create the custom aggregation adding the vector embedding as an argument
+            Document vectorSearchStage = new Document("$vectorSearch", new Document()
+                    .append("queryVector", embedding)
+                    .append("path", "overview_embedding")
+                    .append("numCandidates", 100)
+                    .append("limit", 5) // Number of nearest neighbors to retrieve
+                    .append("index", "overviewEmbeddingIndex") // Specify the vector index name
+            );
+
+            Aggregation aggregation = Aggregation.newAggregation(
+                    context -> vectorSearchStage, // Custom $search stage
+                    Aggregation.project("tmdb_id", "poster_path", "original_title", "overview") // project needed fields
+            );
+
+            // Execute the aggregation pipeline
+            AggregationResults<Map> results = mongoTemplate.aggregate(aggregation, "movies", Map.class);
+            List<MovieShort> moviesShort = results.getMappedResults().stream()
+                    .map(movie -> {
+                        Object tmdbIdObj = movie.get("tmdb_id");
+                        Long tmdbId = (tmdbIdObj instanceof Number) ? ((Number) tmdbIdObj).longValue(): null;
+
+                        return MovieShort.builder()
+                        .tmdbId(tmdbId)
+                            .name((String)movie.get("original_title"))
+                            .posterPath((String)movie.get("poster_path"))
+                            .build();
+                    }).collect(Collectors.toList());
+            return moviesShort;
+
     }
 }

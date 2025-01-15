@@ -3,8 +3,11 @@ package org.adweb.java.controller;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.adweb.java.collection.Movie.*;
+import org.adweb.java.collection.User.MovieShort;
 import org.adweb.java.collection.User.Review;
+import org.adweb.java.dto.request.VectorSearchRequest;
 import org.adweb.java.service.MovieService;
+import org.adweb.java.service.OpenAIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,13 +16,17 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/movies")
 public class MovieController {
 
     private final MovieService movieService;
-    public MovieController(MovieService movieService) {
+    private final OpenAIService openAIService;
+    public MovieController(MovieService movieService, OpenAIService openAIService) {
         this.movieService = movieService;
+        this.openAIService = openAIService;
     }
 
     @GetMapping("/")
@@ -106,4 +113,10 @@ public class MovieController {
         return pagedResourcesAssembler.toModel(moviesPage);
     }
 
+    @PostMapping("/vector-search")
+    public List<MovieShort> getMovieByVectorSearch(@RequestBody VectorSearchRequest request) {
+        List<Float> embedding = openAIService.getEmbedding(request.getQuery());
+//        System.out.println(embedding);
+        return movieService.findSimilarMovies(embedding);
+    }
 }
