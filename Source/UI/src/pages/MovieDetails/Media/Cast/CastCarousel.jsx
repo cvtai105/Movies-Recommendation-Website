@@ -25,21 +25,23 @@ const CastCarousel = ({ castList }) => {
       >
         {castList?.length > 0 &&
           castList?.map((c) => (
-            <Link to={`/cast/${c.id}`}>
+            <Link to={`/cast/${c.id}`} key={c.id}>
               <div
-                className={`h-full w-[140px] w-min-[140px] inline-block mr-4 group relative`}
+                className={`h-full w-[140px] w-min-[140px] inline-block mr-4 relative`}
               >
-                <div className="image-wrapper">
+                <div>
                   <img
                     className="w-full h-full object-cover rounded-xl group-hover:shadow-lg"
-                    src={`${TMDB_STATIC_FILE_PATH}/${c.profile_path}`}
+                    src={c.profile_path? `${TMDB_STATIC_FILE_PATH}/${c.profile_path}` : "https://pic.onlinewebfonts.com/thumbnails/icons_98811.svg"}
                     alt="cast avatar"
                   />
                 </div>
-                <p className="font-bold">{c.name}</p>
-                <p className="text-gray-500">
-                  {c.character.substring(0, c.character.indexOf('/'))}
-                </p>
+                <div className="bg-opacity-50 name-wrapper text-center absolute w-full">
+                  <p className="font-bold text-sm">{c.name}</p>
+                  <p className="text-wrap text-gray-500 text-sm break-words">
+                    {c.character.split(" / ")[0]}
+                  </p>
+                </div>
               </div>
             </Link>
           ))}

@@ -15,7 +15,7 @@ const Media = ({ movie }) => {
         </div>
         <div className="flex-col flex items-center m-4">
           <Review reviews={movie?.reviews} />
-          <Recomendation />
+          <Recomendation overview={movie?.overview}/>
         </div>
       </div>
 
@@ -24,10 +24,10 @@ const Media = ({ movie }) => {
           <p className="font-bold text-left">Production companies</p>
           {movie?.production_companies?.length > 0 &&
             movie?.production_companies.map((c) => (
-              <div className="w-full m-2 p-2">
+              <div className="w-full m-2 p-2" key={c.name}>
                 <p className="text-gray-500 font-mono text-left my-2 py-2">{c.name}</p>
                 <img
-                  src={`${TMDB_STATIC_FILE_PATH}${c.logoPath}`}
+                  src={c.logoPath? `${TMDB_STATIC_FILE_PATH}/${c.logoPath}` : "https://pic.onlinewebfonts.com/thumbnails/icons_98811.svg"}
                   alt={c.name}
                   className="w-[300px] w-min-[300px] h-full my-2"
                 />

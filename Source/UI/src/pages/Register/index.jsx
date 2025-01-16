@@ -49,7 +49,7 @@ function Register() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.message);
+        throw new Error(data.title);
       }
       const data = await response.json();
       setCodeSent(true);
@@ -77,9 +77,9 @@ function Register() {
         }
       );
 
-      if (!response.ok) {
+      if (response.status >= 300) {
         const data = await response.json();
-        throw new Error(data.message);
+        throw new Error(data.title);
       }
       const data = await response.json();
       login(data.accessToken, data.refreshToken);

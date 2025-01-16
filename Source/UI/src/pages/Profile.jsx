@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { useAppContext } from '../AppContext';
+import MovieGallery from '../components/MovieGallery';
 
 const Profile = () => {
   const { userData } = useAppContext();
@@ -10,7 +11,7 @@ const Profile = () => {
       <div className="mb-4">
         <FontAwesomeIcon
           icon={faUserCircle}
-          size="6x"
+          size="3x"
           className="text-gray-500"
         />
       </div>
@@ -20,6 +21,8 @@ const Profile = () => {
         </h2>
         <p className="text-gray-600">{userData.email}</p>
       </div>
+      <MovieGallery title={"Favorite Movies"} url={"/favorite"} />
+      <MovieGallery title={"Watch List"} url={"/watchlist"} />
     </div>
   );
 };

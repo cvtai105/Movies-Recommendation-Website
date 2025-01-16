@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Application.ExternalInterfaces;
+using Infrastructure.OpenAI;
+using MongoDB.Driver;
+using Infrastructure.Gemini;
 
 namespace Infrastructure;
 
@@ -42,8 +45,15 @@ public static class DependencyInjection
 
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddSingleton<IEmailService, SendGrid.EmailService>();
-
+        builder.Services.AddSingleton<IAIService, GeminiService>();
         builder.Services.AddMemoryCache();
+
+        builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+        builder.Services.AddSingleton<IMongoClient>(
+            s => new MongoClient(builder.Configuration.GetValue<string>("MongoDbSettings:ConnectionString")));
+
+        builder.Services.AddScoped<IMongoDatabase>(s =>
+            s.GetRequiredService<IMongoClient>().GetDatabase(builder.Configuration.GetValue<string>("MongoDbSettings:DatabaseName")));
 
     }
 }

@@ -25,7 +25,7 @@ public class IdentityService : IIdentityService
         _emailService = emailService;
     }
 
-    public Task<User?> ActiveUser(Guid userId)
+    public Task<User?> ActiveUser(int userId)
     {
         var user = _context.Users.FirstOrDefault(x => x.Id == userId);
         if (user != null)
@@ -38,7 +38,7 @@ public class IdentityService : IIdentityService
         return Task.FromResult<User?>(null);
     }
 
-    public Task<User?> ConfirmEmail(Guid userId, string code)
+    public Task<User?> ConfirmEmail(int userId, string code)
     {
         // Try to retrieve the token from memory
         if (_memoryCache.TryGetValue($"EmailConfirmation_{userId}", out string? storedToken))
@@ -58,7 +58,7 @@ public class IdentityService : IIdentityService
             }
             else
             {
-                throw new ArgumentException("Invalid code");
+                throw new ArgumentException("Wrong code", nameof(code));
             }
         }
         return Task.FromResult<User?>(null);
@@ -90,15 +90,12 @@ public class IdentityService : IIdentityService
     {
         var user = new User
         {
-            Id = Guid.NewGuid(),
             Email = param.Email,
             Name = param.Name,
             Role = "User",
             Status = "Inactive",
             Avatar = param.Avatar
         };
-
-
 
         user.Hash = param.Password.HashPassword();
 

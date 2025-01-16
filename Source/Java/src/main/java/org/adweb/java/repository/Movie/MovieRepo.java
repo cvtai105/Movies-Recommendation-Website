@@ -13,9 +13,13 @@ import java.util.Optional;
 
 @Repository
 public interface MovieRepo extends MongoRepository<Movie, ObjectId> {
-    Page<Movie> findAll(Pageable pageable);
-    Optional<Movie> findByTmdbId(Long tmdbId);
-    /// Find movies by matching genre IDs with pagination
-    @Query("{ 'genres': { $elemMatch: { 'id': { $in: ?0 } } } }")
-    Page<Movie> findByGenres(List<Integer> genreIds, Pageable pageable);
+  @Query("{ 'genres': { $elemMatch: { 'id': { $in: ?0 } } } }")
+  Page<Movie> findByGenres(List<Integer> genreIds, Pageable pageable);
+
+  Page<Movie> findAll(Pageable pageable);
+
+  Optional<Movie> findByTmdbId(Long tmdbId);
+
+  @Query("{ 'release_date': { $ne: null }, 'trailers': { $ne: null } }")
+  Page<Movie> findMoviesWithLatestTrailer(Pageable pageable);
 }

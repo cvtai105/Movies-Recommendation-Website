@@ -5,10 +5,12 @@ import lombok.*;
 import org.adweb.java.collection.User.Review;
 import org.adweb.java.document.Credit;
 import org.adweb.java.document.MovieGenre;
+import org.adweb.java.document.Trailer;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Document(collection = "movies")
@@ -26,4 +28,6 @@ public class Movie extends MovieGeneral{
     @JsonProperty("production_companies")
     @Field("production_companies")
     ArrayList<ProductCompany> productCompanies;
+    @Field("trailer")
+    private List<Trailer> trailers;
 }

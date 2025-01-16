@@ -11,7 +11,7 @@ public class SearchHistory
     public string Search { get; set; } = null!;
     public string Proccessed_search { get; set; } = null!;
     public DateTime Search_date { get; set; }
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
 
     public User User { get; set; } = null!;
 }

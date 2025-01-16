@@ -31,13 +31,13 @@ public class Auth : Controller
 
         var user = await _identityService.GetByEmail(loginInfo.Email);
 
-        if (user == null) return Unauthorized(new { Message = "Email was not registered" });
+        if (user == null) return Unauthorized(new { title = "Email was not registered" });
 
-        if (user.Status != "Active") return Unauthorized(new { Message = "Account is not active" });
+        if (user.Status != "Active") return Unauthorized(new { title = "Account is not active" });
 
         var passwordHash = loginInfo.Password.HashPassword();
         if (passwordHash != user.Hash)
-            return Unauthorized(new { Message = "Wrong password" });
+            return Unauthorized(new { title = "Wrong password" });
 
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken(user);
@@ -55,7 +55,7 @@ public class Auth : Controller
     {
         if (string.IsNullOrEmpty(info.Email) || string.IsNullOrEmpty(info.Name) || string.IsNullOrEmpty(info.Password))
         {
-            return BadRequest(new { Message = "Email, Password, FullName, and Phone are required." });
+            return BadRequest(new { title = "Email, Password, FullName, and Phone are required." });
         }
 
         var user = await _identityService.GetByEmail(info.Email);
@@ -63,14 +63,14 @@ public class Auth : Controller
         {
             if (user.Status == "Active")
             {
-                return BadRequest(new { Message = "Email is already registered" });
+                return BadRequest(new { title = "Email is already registered" });
             }
             else
             {
                 await _identityService.SendActiveCodeViaEmail(user);
                 return Ok(new
                 {
-                    Message = "Resend active code successfully",
+                    title = "Resend active code successfully",
                     StatusCode = 201,
                     UserId = user.Id
                 });
@@ -83,7 +83,7 @@ public class Auth : Controller
         return Ok(new
         {
             StatusCode = 201,
-            Message = "User created successfully",
+            title = "User created successfully",
             UserId = newUser.Id
         });
     }
@@ -93,13 +93,20 @@ public class Auth : Controller
     {
         if (string.IsNullOrEmpty(code))
         {
-            return BadRequest("Verification code is required.");
+            return BadRequest(
+                new
+                {
+                    title = "Verification code is required.",
+                    status = 400
+                }
+            );
         }
-        if (!Guid.TryParse(userId, out var userIdGuid))
+        if (!int.TryParse(userId, out var userIdGuid))
         {
             return BadRequest(new
             {
-                Message = "Invalid user id"
+                title = "Invalid user id",
+                status = 400
             });
         }
 
@@ -108,7 +115,8 @@ public class Auth : Controller
         {
             return BadRequest(new
             {
-                Message = "Invalid verification code"
+                title = "Invalid verification code",
+                status = 400,
             });
         }
 
@@ -131,7 +139,7 @@ public class Auth : Controller
             return BadRequest(
                 new
                 {
-                    Title = "Email is required.",
+                    title = "Email is required.",
                     Status = 400,
                 }
             );
@@ -142,7 +150,7 @@ public class Auth : Controller
         {
             return BadRequest(new
             {
-                Title = "Email is not registered.",
+                title = "Email is not registered.",
                 Status = 400,
             });
         }
@@ -152,7 +160,7 @@ public class Auth : Controller
         return Ok(new
         {
             Status = 200,
-            Title = "Reset password email sent successfully",
+            title = "Reset password email sent successfully",
             UserId = user.Id
         });
     }
@@ -164,16 +172,16 @@ public class Auth : Controller
         {
             return BadRequest(new
             {
-                Title = "Verification code is required.",
+                title = "Verification code is required.",
                 Status = 400,
             });
         }
-        if (req.UserId == Guid.Empty)
+        if (req.UserId == 0)
         {
             return BadRequest(
                 new
                 {
-                    Title = "Invalid user id",
+                    title = "Invalid user id",
                     Status = 400,
                 }
             );
@@ -185,7 +193,7 @@ public class Auth : Controller
             return BadRequest(
                 new
                 {
-                    Title = "Invalid verification code",
+                    title = "Invalid verification code",
                     Status = 400,
                 }
             );

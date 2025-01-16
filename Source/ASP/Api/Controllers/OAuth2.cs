@@ -133,14 +133,18 @@ public class OAuth2 : Controller
                 {
                     // If the request failed, return the error details
                     var errorResponse = await response.Content.ReadAsStringAsync();
-                    return BadRequest(new { error = errorResponse });
+                    return BadRequest(new { title = errorResponse });
                 }
             }
             catch (Exception ex)
             {
                 // Log the error and return a 500 status code if an exception occurs
                 _logger.LogError(ex, "An error occurred while exchanging the code for a token");
-                return StatusCode(500, ex.Message);
+                return Ok(new
+                {
+                    title = "An error occurred while exchanging the code for a token",
+                    status = 500
+                });
             }
         }
 

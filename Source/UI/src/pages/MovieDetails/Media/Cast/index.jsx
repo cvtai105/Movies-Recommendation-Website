@@ -6,7 +6,7 @@ const Cast = ({ castList }) => {
     <div>
       <h2 className="font-bold text-left p-2 ml-2">Series Cast</h2>
       <div id="cast_scroller">
-        <ul className="p-2 flex flex-wrap">
+        <ul className="p-2">
           {castList?.length > 0 &&
             castList?.map((c) => (
               <li className="m-2 border-gray-600 shadow-md pb-2 rounded-md overflow-hidden min-w-[140px] w-[140px] bg-white">
